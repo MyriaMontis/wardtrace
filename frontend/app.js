@@ -397,8 +397,8 @@ async function renderTraceGraph(res) {
     cy.edges().filter((e) => trace1.has(e.id())).removeClass("dim").addClass("trace1");
   });
   syncMini();
-  caption(`Step 1 · ${index}'s close contacts in the ward (${windowText}): ${res.first_gen.length} people`,
-    `（病棟の配置のまま、${index} と感染可能期間に濃厚接触した人を表示）`);
+  caption(`Step 1 · ${index}'s close contacts in the ward (${windowText}): ${res.first_gen.length}`,
+    `（元の配置で ${index} の濃厚接触者を表示）`);
   await moveTo(wardPositions, ids(byGen(0).union(byGen(1))), 90, 900);
   if (!alive()) return;
   await sleep(1400);
@@ -412,9 +412,9 @@ async function renderTraceGraph(res) {
     });
     syncMini();
     const ignored = res.second_gen_if_time_ignored;
-    caption(`Step 2 · Who they met afterwards (time-respecting): ${res.second_gen.length} people` +
-      (ignored === null || ignored === undefined ? "" : ` — ${ignored} if time order were ignored`),
-      "（1段目の人が、そのあと（1日以上後）に接触した人＝2段目）");
+    caption(`Step 2 · Who they met afterwards: ${res.second_gen.length}` +
+      (ignored === null || ignored === undefined ? "" : ` (${ignored} without time order)`),
+      "（1段目の人がそのあとに接触した人＝2段目）");
     await moveTo(wardPositions, ids(related), 50, 900);
     if (!alive()) return;
     await sleep(1400);
@@ -423,10 +423,8 @@ async function renderTraceGraph(res) {
 
   // ③ 起点を中心に並べ替える（抽象化）
   const has2 = res.second_gen.length > 0;
-  caption(`Step ${has2 ? 3 : 2} · Re-arranged around ${index}: 1st gen inner ring` +
-    (has2 ? ", 2nd gen outer ring (faded). Click a 1st-gen person to see their 2nd-gen paths" : ""),
-    `（${index} を中心に整理。外側の薄い点は無関係の人。右上の小さな図が元の配置` +
-    (has2 ? "。2段目は薄く表示し、1段目の人をクリックするとその人を経由する2段目だけ濃くなる）" : "）"));
+  caption(`Step ${has2 ? 3 : 2} · Rings around ${index}`,
+    `（${index} を中心に整理。右上が元の配置）`);
   // 2段目は薄くする（色の意味はそのまま）
   if (has2) {
     cy.batch(() => {
@@ -439,7 +437,7 @@ async function renderTraceGraph(res) {
   if (!alive()) return;
   showMini();
   // 字幕はしばらく残してから消す（ボタンはここで押せるように戻す）
-  setTimeout(() => { if (alive()) hideCaption(); }, has2 ? 6000 : 3500);
+  setTimeout(() => { if (alive()) hideCaption(); }, 2500);
 }
 
 // ---------------------------------------------------------------- 1段目をクリック → 経由する2段目を強調
@@ -551,7 +549,10 @@ function renderTraceTable(res, focusId = null) {
   const focusNote = focusId ? `
     <p class="focus-note">Showing only 2nd gen via <b>${esc(focusId)}</b>: ${shown.length} of ${res.second_gen.length}.
       Click ${esc(focusId)} again (or the background) to show all.
-      <span class="ja">（${esc(focusId)} を経由する2段目だけ表示中。もう一度クリックすると全員に戻る）</span></p>` : "";
+      <span class="ja">（${esc(focusId)} を経由する2段目だけ表示中。もう一度クリックすると全員に戻る）</span></p>`
+    : res.second_gen.length ? `
+    <p class="hint-note">Tip: click a 1st-gen person in the graph to see only the 2nd gen reached through them.
+      <span class="ja">（グラフで1段目の人をクリックすると、その人を経由する2段目だけ表示）</span></p>` : "";
   $("#tab-contacts").innerHTML = `
     <p class="summary">Index <b>${esc(res.index.id)}</b> ${esc(res.index.name)} ${badge(res.index.status)}
       · infectious window <b>${shortDate(w.start)} → ${end}</b></p>

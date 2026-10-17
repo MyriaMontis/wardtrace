@@ -116,6 +116,7 @@ main {
 }
 #counts .via { color: #92400e; }
 #counts .ja { margin-left: 6px; }
+.hint-note { margin: 0 0 6px; font-size: 12px; color: var(--muted); }
 .focus-note { margin: 0 0 6px; padding: 5px 8px; font-size: 12px; background: #fef9c3; border-radius: 4px; }
 tbody tr.focus { background: #fff7ed; }
 #graph-wrap { position: relative; min-height: 0; }
@@ -130,14 +131,14 @@ tbody tr.focus { background: #fff7ed; }
 
 /* 追跡アニメーションの各段階で、何をしているかを出す字幕 */
 #caption {
-  position: absolute; left: 12px; top: 10px; max-width: 58%;
-  padding: 8px 12px; font-size: 14px; font-weight: 600; line-height: 1.45;
+  position: absolute; left: 12px; top: 8px; max-width: 44%;
+  padding: 5px 10px; font-size: 12.5px; font-weight: 600; line-height: 1.4;
   color: var(--text); background: rgba(255,255,255,.96);
   border: 1px solid var(--line); border-left: 4px solid var(--gen1); border-radius: 6px;
   box-shadow: 0 1px 4px rgba(0,0,0,.08);
 }
 #caption[hidden] { display: none; }
-#caption .ja { font-size: 12px; }
+#caption .ja { font-size: 11px; }
 
 /* 追跡後に右上に出す病棟全体の縮小図（最初の配置のまま）。右下は凡例と重なるので右上 */
 #mini-wrap {
