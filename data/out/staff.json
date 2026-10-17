@@ -1,0 +1,137 @@
+[
+ {
+  "id": "N01",
+  "name": "Mori",
+  "role": "nurse",
+  "status": "untested",
+  "test_date": null,
+  "onset_date": null,
+  "isolated_date": null
+ },
+ {
+  "id": "N02",
+  "name": "Endo",
+  "role": "nurse",
+  "status": "untested",
+  "test_date": null,
+  "onset_date": null,
+  "isolated_date": null
+ },
+ {
+  "id": "N03",
+  "name": "Aoki",
+  "role": "nurse",
+  "status": "negative",
+  "test_date": "2026-10-16",
+  "onset_date": null,
+  "isolated_date": null
+ },
+ {
+  "id": "N04",
+  "name": "Fujii",
+  "role": "nurse",
+  "status": "untested",
+  "test_date": null,
+  "onset_date": null,
+  "isolated_date": null
+ },
+ {
+  "id": "N05",
+  "name": "Nishimura",
+  "role": "nurse",
+  "status": "negative",
+  "test_date": "2026-10-16",
+  "onset_date": null,
+  "isolated_date": null
+ },
+ {
+  "id": "N06",
+  "name": "Fukuda",
+  "role": "nurse",
+  "status": "negative",
+  "test_date": "2026-10-16",
+  "onset_date": null,
+  "isolated_date": null
+ },
+ {
+  "id": "N07",
+  "name": "Ota",
+  "role": "nurse",
+  "status": "untested",
+  "test_date": null,
+  "onset_date": null,
+  "isolated_date": null
+ },
+ {
+  "id": "N08",
+  "name": "Miura",
+  "role": "nurse",
+  "status": "untested",
+  "test_date": null,
+  "onset_date": null,
+  "isolated_date": null
+ },
+ {
+  "id": "N09",
+  "name": "Okamoto",
+  "role": "nurse",
+  "status": "untested",
+  "test_date": null,
+  "onset_date": null,
+  "isolated_date": null
+ },
+ {
+  "id": "N10",
+  "name": "Matsuda",
+  "role": "nurse",
+  "status": "untested",
+  "test_date": null,
+  "onset_date": null,
+  "isolated_date": null
+ },
+ {
+  "id": "N11",
+  "name": "Nakajima",
+  "role": "nurse",
+  "status": "untested",
+  "test_date": null,
+  "onset_date": null,
+  "isolated_date": null
+ },
+ {
+  "id": "N12",
+  "name": "Harada",
+  "role": "nurse",
+  "status": "untested",
+  "test_date": null,
+  "onset_date": null,
+  "isolated_date": null
+ },
+ {
+  "id": "D01",
+  "name": "Ono",
+  "role": "doctor",
+  "status": "untested",
+  "test_date": null,
+  "onset_date": null,
+  "isolated_date": null
+ },
+ {
+  "id": "D02",
+  "name": "Takeuchi",
+  "role": "doctor",
+  "status": "untested",
+  "test_date": null,
+  "onset_date": null,
+  "isolated_date": null
+ },
+ {
+  "id": "R01",
+  "name": "Kaneko",
+  "role": "radiographer",
+  "status": "untested",
+  "test_date": null,
+  "onset_date": null,
+  "isolated_date": null
+ }
+]

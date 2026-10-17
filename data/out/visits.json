@@ -1,0 +1,72 @@
+[
+ {
+  "patient_id": "P05",
+  "room_id": "XRAY",
+  "date": "2026-10-14",
+  "start": "10:00",
+  "end": "10:20"
+ },
+ {
+  "patient_id": "P12",
+  "room_id": "XRAY",
+  "date": "2026-10-15",
+  "start": "09:30",
+  "end": "09:50"
+ },
+ {
+  "patient_id": "P18",
+  "room_id": "XRAY",
+  "date": "2026-10-15",
+  "start": "13:30",
+  "end": "13:50"
+ },
+ {
+  "patient_id": "P03",
+  "room_id": "XRAY",
+  "date": "2026-10-14",
+  "start": "10:40",
+  "end": "11:15"
+ },
+ {
+  "patient_id": "P22",
+  "room_id": "LAB",
+  "date": "2026-10-15",
+  "start": "09:20",
+  "end": "09:40"
+ },
+ {
+  "patient_id": "P07",
+  "room_id": "LAB",
+  "date": "2026-10-13",
+  "start": "09:10",
+  "end": "09:35"
+ },
+ {
+  "patient_id": "P09",
+  "room_id": "LAB",
+  "date": "2026-10-13",
+  "start": "10:20",
+  "end": "10:35"
+ },
+ {
+  "patient_id": "P10",
+  "room_id": "LAB",
+  "date": "2026-10-13",
+  "start": "09:30",
+  "end": "10:05"
+ },
+ {
+  "patient_id": "P16",
+  "room_id": "XRAY",
+  "date": "2026-10-16",
+  "start": "10:50",
+  "end": "11:25"
+ },
+ {
+  "patient_id": "P28",
+  "room_id": "LAB",
+  "date": "2026-10-10",
+  "start": "10:00",
+  "end": "10:25"
+ }
+]

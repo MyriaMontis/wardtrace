@@ -1,0 +1,57 @@
+[
+ {
+  "id": "501",
+  "name": "Room 501",
+  "type": "ward"
+ },
+ {
+  "id": "502",
+  "name": "Room 502",
+  "type": "ward"
+ },
+ {
+  "id": "503",
+  "name": "Room 503",
+  "type": "ward"
+ },
+ {
+  "id": "504",
+  "name": "Room 504",
+  "type": "ward"
+ },
+ {
+  "id": "505",
+  "name": "Room 505",
+  "type": "ward"
+ },
+ {
+  "id": "506",
+  "name": "Room 506",
+  "type": "ward"
+ },
+ {
+  "id": "507",
+  "name": "Room 507",
+  "type": "ward"
+ },
+ {
+  "id": "508",
+  "name": "Room 508",
+  "type": "ward"
+ },
+ {
+  "id": "XRAY",
+  "name": "X-ray room",
+  "type": "xray"
+ },
+ {
+  "id": "LAB",
+  "name": "Lab",
+  "type": "lab"
+ },
+ {
+  "id": "STATION",
+  "name": "Nurse station",
+  "type": "station"
+ }
+]

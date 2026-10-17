@@ -1,0 +1,2816 @@
+[
+ {
+  "staff_id": "N01",
+  "patient_id": "P03",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P06",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P09",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P19",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P20",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P02",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P04",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P07",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P16",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P29",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P08",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P15",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P18",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P26",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P01",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P10",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P11",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P14",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P23",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P30",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P12",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P13",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P22",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P25",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P05",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P17",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P21",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P24",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P27",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P28",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P05",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P12",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P18",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P20",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P28",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P04",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P07",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P24",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P30",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P06",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P08",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P11",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P27",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P01",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P10",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P14",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P15",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P17",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P29",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P09",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P16",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P19",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P23",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P25",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P02",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P03",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P13",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P21",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P22",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P26",
+  "date": "2026-10-10",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P06",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P19",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P21",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P25",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P28",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P29",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P07",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P08",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P10",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P16",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P20",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P14",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P18",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P22",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P26",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P30",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P09",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P13",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P17",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P24",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P01",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P02",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P11",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P12",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P23",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P03",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P04",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P05",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P15",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P27",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P03",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P05",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P12",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P18",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P26",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P02",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P09",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P13",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P24",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P27",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P30",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P10",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P20",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P23",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P25",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P29",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P04",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P11",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P19",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P21",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P22",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P07",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P08",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P14",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P15",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P16",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P01",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P06",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P17",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P28",
+  "date": "2026-10-11",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P02",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P24",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P25",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P27",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P30",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P04",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P13",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P15",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P28",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P29",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P08",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P09",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P10",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P18",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P21",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P03",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P06",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P14",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P19",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P20",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P01",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P12",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P17",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P23",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P26",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P05",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P07",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P11",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P16",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P22",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P02",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P05",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P08",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P12",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P15",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P18",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P01",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P07",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P10",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P26",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P29",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P03",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P11",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P16",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P17",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P19",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P04",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P06",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P20",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P21",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P25",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P09",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P13",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P22",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P23",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P27",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P14",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P24",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P28",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P30",
+  "date": "2026-10-12",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P03",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P07",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P23",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P29",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P04",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P09",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P15",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P22",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P25",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P26",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P02",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P08",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P13",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P18",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P27",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P06",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P10",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P11",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P24",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P30",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P12",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P14",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P17",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P19",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P20",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P28",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P01",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P05",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P16",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P21",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P05",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P12",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P17",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P18",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P22",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P23",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P03",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P04",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P08",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P10",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P20",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P21",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P06",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P14",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P26",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P30",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P07",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P09",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P19",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P25",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P27",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P11",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P15",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P24",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P28",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P29",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P01",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P02",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P13",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P16",
+  "date": "2026-10-13",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P06",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P10",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P11",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P21",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P27",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P08",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P13",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P20",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P23",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P24",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P30",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P16",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P18",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P19",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P28",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P01",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P02",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P17",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P22",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P25",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P03",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P09",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P12",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P14",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P15",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P04",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P05",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P07",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P26",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P29",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P05",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P06",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P12",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P18",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P21",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P26",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P02",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P14",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P22",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P28",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P29",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P07",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P11",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P16",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P23",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P27",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P01",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P04",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P15",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P17",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P08",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P13",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P19",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P20",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P24",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P30",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P03",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P09",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P10",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P25",
+  "date": "2026-10-14",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P09",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P10",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P16",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P25",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P27",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P29",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P02",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P04",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P07",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P15",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P19",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P18",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P23",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P26",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P30",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P06",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P17",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P20",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P24",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P01",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P11",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P12",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P14",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P21",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P03",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P05",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P08",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P13",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P22",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P28",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P01",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P05",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P12",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P13",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P18",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P04",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P07",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P10",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P22",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P27",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P02",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P08",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P14",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P16",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P28",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P30",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P11",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P17",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P21",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P23",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P24",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P06",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P25",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P26",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P29",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P03",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P09",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P15",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P19",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P20",
+  "date": "2026-10-15",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P04",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P11",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P20",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P25",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P27",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N01",
+  "patient_id": "P28",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P06",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P13",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P15",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P16",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N02",
+  "patient_id": "P30",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P08",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P18",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P19",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N03",
+  "patient_id": "P23",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P03",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P17",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P21",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N04",
+  "patient_id": "P24",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P01",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P10",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P12",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P14",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P22",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N05",
+  "patient_id": "P26",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P02",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P05",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P07",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P09",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N06",
+  "patient_id": "P29",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P05",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P12",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P17",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P18",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N07",
+  "patient_id": "P25",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P03",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P07",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P08",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P19",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N08",
+  "patient_id": "P20",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P11",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P13",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P24",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N09",
+  "patient_id": "P27",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P04",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P06",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P09",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P15",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P21",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N10",
+  "patient_id": "P22",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P01",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P10",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P14",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P16",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P23",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N11",
+  "patient_id": "P26",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P02",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P28",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P29",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "N12",
+  "patient_id": "P30",
+  "date": "2026-10-16",
+  "shift": "night"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P09",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P20",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P21",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P23",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P24",
+  "date": "2026-10-10",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P07",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P30",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P04",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P06",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P24",
+  "date": "2026-10-11",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P03",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P09",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P22",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P04",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P16",
+  "date": "2026-10-12",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P22",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P27",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P28",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P16",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P19",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P26",
+  "date": "2026-10-13",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P03",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P05",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P08",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P21",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P22",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P06",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P11",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P16",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P05",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P12",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P21",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P22",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P30",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P11",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P16",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P18",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P05",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P10",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P12",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D01",
+  "patient_id": "P28",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P11",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P14",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "D02",
+  "patient_id": "P18",
+  "date": "2026-10-16",
+  "shift": "day"
+ },
+ {
+  "staff_id": "R01",
+  "patient_id": "P05",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "R01",
+  "patient_id": "P12",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "R01",
+  "patient_id": "P18",
+  "date": "2026-10-15",
+  "shift": "day"
+ },
+ {
+  "staff_id": "R01",
+  "patient_id": "P03",
+  "date": "2026-10-14",
+  "shift": "day"
+ },
+ {
+  "staff_id": "R01",
+  "patient_id": "P16",
+  "date": "2026-10-16",
+  "shift": "day"
+ }
+]
