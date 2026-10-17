@@ -20,6 +20,54 @@
 - **パッケージを追加・更新しない**。必要になったら先に人に確認する
 - テスト：`requirements-dev.txt`（pytest・httpx）を `.venv` に導入済み。`.venv/bin/python -m pytest -q tests` で 5章のシナリオを確認できる（Neo4j の起動が必要。テストは `/api/reset` でデータを入れ直す）
 
+## 実装状況（2026-10-17 時点）
+
+PLAN.md の実装順はすべて完了し、12章のデモ（P12陽性 → Trace depth2 → Find source → Ask）が最後まで通る。テストは23件すべて通過。詳しい使い方・API・画面の説明は **README.md**（英語）にある。
+
+- 起動手順：`docker compose up -d` → `.venv/bin/python data/generate.py` → `.venv/bin/python -m backend.load` → `.venv/bin/python -m uvicorn backend.main:app --port 8000` → http://localhost:8000
+- Claude Code のプレビューでは `.claude/launch.json` の `wardtrace`（uvicorn、ポート 8000、`--reload` 付き）で起動できる。`frontend/` を作ったあとは、`main.py` が読み込まれ直すまで `/` が配信されない（`--reload` は .py の変更で再起動する）
+- PLAN.md からの追加・変更（PLAN.md にも反映済み）
+  - `/api/persons` は `test_date` と `onset_date` も返す
+  - `/api/trace` は `second_gen_if_time_ignored`（時間順の条件だけを外した2段目の人数。depth 1 は null）も返す
+  - 7-1：2段目から外すのは「感染可能期間内に起点と濃厚接触した人」だけ（期間外の接触だけの人は2段目に出る）
+  - 7-2：発熱陰性者は `x.status <> "fever_negative"` で候補からも明示的に除外
+  - 追跡後のレイアウトは concentric（起点を中心に1段目・2段目・無関係の順で外側へ）。初期表示は cose
+- ai&：本命 `openai/gpt-oss-120b`（日英6問で正解、1問2〜4秒）。予備 `deepseek-ai/deepseek-v4-flash` も6問正解だが遅い。ユーザーは gpt-oss を希望。回答の言語は Python 側で判定して指示している
+- 期待される数字（初期データ。違ったら Reset）
+  - P12 起点：感染可能期間 10/13〜10/16、1段目6人（D01, N05, N07, P08, P25, R01）、2段目26人（時間順を無視すると34人）
+  - 感染源：N07 だけ（P05・P12・P18 の3人と接触）。P03・P22 は出ない
+  - グラフ：45人、濃厚接触のペア304本
+  - Ask「Who did N07 care for on night shifts?」→ 患者18人
+
+## 画面の操作（ブラウザを操作する AI 向け）
+
+画面は1枚（1440×900 想定）。英語のラベルの横に（）で日本語の説明がある。操作に使う要素：
+
+| 要素 | セレクタ | 動き |
+| --- | --- | --- |
+| 対象者 | `#person`（select） | 値は ID（例 `P12`）。初期値は P12。変えると検査日・発症日が自動で入る（陽性者は登録済みの日付、それ以外は検査日 2026-10-16・発症日は空） |
+| 検査日・発症日 | `#test-date`, `#onset-date`（date） | `YYYY-MM-DD`。発症日は任意 |
+| Mark positive | `#mark` | `POST /api/positive` のあと、選択中の depth で自動的に Trace まで実行する。データが変わるので、終わったら Reset する |
+| Depth | `input[name=depth]`（value `1` / `2`） | 初期値は 1 |
+| Trace contacts | `#trace` | `#person` の人を起点に `POST /api/trace`。グラフが約1秒アニメーションしてから関係者にズームする。結果は `#tab-contacts` |
+| Find source | `#source` | `GET /api/source`。候補を太い赤枠、陽性者への線を赤にする。結果は `#tab-source` |
+| 質問欄 | `#question`（textarea） | 空のまま送ると placeholder の質問を送る |
+| 質問の候補 | `.chip`（`data-q` に質問文） | 押すとすぐ送信 |
+| Ask | `#ask` | `POST /api/ask`。2〜4秒かかる。結果は `#tab-ask`（回答 `.answer`、Cypher は `<details>` の中） |
+| Reset | `#reset` | `POST /api/reset` で初期データに戻し、グラフも描き直す |
+| ステータス | `#status` | 直前の操作の結果（例 `Traced P12: 6 first-gen, 26 second-gen (34 if time order ignored)`）。エラーは `Error: ...` |
+| タブ | `.tabs button[data-tab=contacts\|source\|ask]` | 結果パネルの切り替え |
+| グラフ | `#cy`（Cytoscape。ページ上の変数 `cy`） | ノードをクリックすると、その人の接触一覧が `#tab-contacts` に出る。表の行をクリックするとそのノードに移動する |
+
+- 処理中はボタンが無効になり、文言が `Tracing…` などに変わる。元の文言に戻るまで待つ
+- スクリーンショットはアニメーションが終わるまで1.5〜2秒待ってから撮る
+- 表示の確認は、スクリーンショットより `#status` と各タブのテキストを読むほうが確実
+
+## コミットのルール
+
+- コミットメッセージや PR に Claude のクレジット（`Co-Authored-By: Claude` など）を入れない
+- push の前に、個人情報（下の章）と API キーが入っていないか確認する
+
 ## GitHub に上げないもの（`.gitignore` 設定済み）
 
 - `.venv/`：各自 `pip install -r requirements.txt` で作り直せる
