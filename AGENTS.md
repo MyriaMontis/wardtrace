@@ -47,7 +47,7 @@ PLAN.md の実装順はすべて完了し、12章のデモ（P12陽性 → Trace
 | --- | --- | --- |
 | 対象者 | `#person`（select） | 値は ID（例 `P12`）。初期値は P12。変えると検査日・発症日が自動で入る（記録済みの日付があればそれ、なければ検査日 2026-10-16・発症日は空）。選ばれている人はグラフで青く点滅する（クラス `picked`、700ms ごとに `pulse-on` を切り替え） |
 | 検査日・発症日 | `#test-date`, `#onset-date`（date） | `YYYY-MM-DD`。発症日は任意 |
-| Mark positive | `#mark` | `POST /api/positive` のあと、選択中の depth で自動的に Trace まで実行する。データが変わるので、終わったら Reset する |
+| Mark positive | `#mark` | `POST /api/positive` のあと、選択中の depth で追跡するが、**元の配置のまま見せるところ（Step 1、depth 2 なら Step 2）で止める**。輪への並べ替えはしない（depth 1 なら約2秒）。データが変わるので、終わったら Reset する |
 | Depth | `input[name=depth]`（value `1` / `2`） | 初期値は 1。Reset で 1 に戻る |
 | Trace contacts | `#trace` | `#person` の人を起点に `POST /api/trace`。表 `#tab-contacts` とステータスはすぐ出る。グラフは3段階で見せる：① 最初の配置のまま起点と1段目にズーム → ② 2段目を追加（depth 2 のみ）→ ③ 起点中心の輪に並べ替え。各段階の説明は字幕 `#caption`（左上）。depth 2 で約8〜10秒、終わるまでボタンは無効 |
 | Find source | `#source` | `GET /api/source`。候補を太い赤枠、陽性者への線を赤にする。結果は `#tab-source` |

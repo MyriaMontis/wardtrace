@@ -263,7 +263,8 @@ async function markPositive() {
   fillPersonSelect();
   updateNodeData(p);
   setStatus(`${id} marked positive (test ${shortDate(p.test_date)}${p.onset_date ? ", onset " + shortDate(p.onset_date) : ""})`);
-  await trace();
+  // Mark positive は病棟の元の配置のまま見せるところまで。輪への並べ替えは Trace contacts で行う
+  await trace({ wardOnly: true });
 }
 
 // ---------------------------------------------------------------- 2. trace
@@ -272,7 +273,8 @@ function depth() {
   return Number(document.querySelector("input[name=depth]:checked").value);
 }
 
-async function trace() {
+// wardOnly：元の配置のまま見せるところ（Step 1、depth 2 なら Step 2 まで）で止め、輪に並べ替えない
+async function trace({ wardOnly = false } = {}) {
   const indexId = $("#person").value;
   const res = await api("/api/trace", { index_id: indexId, depth: depth() });
   // 表・人数・ステータスは先に出し、グラフは段階的に見せる
@@ -282,7 +284,7 @@ async function trace() {
   const ignored = res.second_gen_if_time_ignored;
   setStatus(`Traced ${indexId}: ${res.first_gen.length} first-gen, ${res.second_gen.length} second-gen` +
     (ignored === null || ignored === undefined ? "" : ` (${ignored} if time order ignored)`));
-  await renderTraceGraph(res);
+  await renderTraceGraph(res, { wardOnly });
 }
 
 // 追跡アニメーションの世代番号。新しい追跡・感染源推定・質問・Reset で増やし、古いアニメーションを止める
@@ -368,7 +370,7 @@ function hideCaption() {
 //  ① 最初の配置のまま、起点と1段目にズーム（病棟の中のどこでつながったかが分かる）
 //  ② 2段目を足して、関係者全体が入るまでズームアウト
 //  ③ 起点を中心に並べ替える（1段目が内側の輪、2段目が外側の輪、無関係は薄く外周）
-async function renderTraceGraph(res) {
+async function renderTraceGraph(res, { wardOnly = false } = {}) {
   const run = ++traceRun;
   const alive = () => run === traceRun;
   cy.stop(true, false);
@@ -401,7 +403,7 @@ async function renderTraceGraph(res) {
     `（元の配置で ${index} の濃厚接触者を表示）`);
   await moveTo(wardPositions, ids(byGen(0).union(byGen(1))), 90, 900);
   if (!alive()) return;
-  await sleep(1400);
+  if (!(wardOnly && !res.second_gen.length)) await sleep(1400);  // Mark positive で次の段がなければ待たない
   if (!alive()) return;
 
   // ② 2段目
@@ -419,6 +421,12 @@ async function renderTraceGraph(res) {
     if (!alive()) return;
     await sleep(1400);
     if (!alive()) return;
+  }
+
+  // Mark positive のときはここまで（元の配置のまま）。字幕だけ少し残して消す
+  if (wardOnly) {
+    setTimeout(() => { if (alive()) hideCaption(); }, 2500);
+    return;
   }
 
   // ③ 起点を中心に並べ替える（抽象化）

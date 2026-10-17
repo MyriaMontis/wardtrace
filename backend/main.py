@@ -25,6 +25,16 @@ async def lifespan(app):
 app = FastAPI(title="WardTrace", lifespan=lifespan)
 
 
+@app.middleware("http")
+async def no_stale_frontend(request, call_next):
+    # 画面のファイルは毎回サーバーに確認させる（変更していなければ 304 で軽い）。
+    # 古い app.js がブラウザに残ってデモで前の動きになるのを防ぐ
+    response = await call_next(request)
+    if not request.url.path.startswith("/api"):
+        response.headers["Cache-Control"] = "no-cache"
+    return response
+
+
 class PositiveIn(BaseModel):
     id: str
     test_date: date

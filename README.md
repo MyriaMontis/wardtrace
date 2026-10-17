@@ -110,14 +110,14 @@ The initial data has two positives, **P05** and **P18**. **P12** (the demo's ind
 2. **Test** date and **Onset** date are filled in automatically when you change the person:
    - a person with recorded dates → those dates (P12: test 2026-10-16, onset 2026-10-15);
    - anyone else → test 2026-10-16, onset empty (onset is optional; without it the test date is used).
-3. Click **Mark positive**. This sets the person's status to positive with isolation date = test date (`POST /api/positive`), then **immediately runs Step 2** with the depth currently selected. **P12's node turns from grey to red**, the dropdown now says `positive`, and the status line shows `P12 marked positive (test 10/16, onset 10/15)`, then the trace result.
+3. Click **Mark positive**. This sets the person's status to positive with isolation date = test date (`POST /api/positive`), then **immediately traces** with the depth currently selected, but only shows it **in the original ward layout** (Step 1 below, plus Step 2 if depth 2) — it does not re-arrange into rings. **P12's node turns from grey to red**, the dropdown now says `positive`, and the status line shows `P12 marked positive (test 10/16, onset 10/15)`, then the trace result. With depth 1 this takes about 2 seconds, and **depth 1 is then already done** — the next demo step is Step 2 with depth 2.
 
 Marking a new person positive changes the data until you press **Reset**.
 
 ### Step 2 — Trace contacts
 
 1. **Depth**: `1` (default) = close contacts only; `2` = also their contacts.
-2. Click **Trace contacts**. The index case is the person selected in Step 1 (`POST /api/trace`).
+2. Click **Trace contacts**. The index case is the person selected in Step 1 (`POST /api/trace`). Unlike Mark positive, this ends by re-arranging the graph into rings around the index (Step 3 below).
 3. The graph explains itself in steps (about 8–10 seconds in total for depth 2). A caption box at the top left of the graph says what each step shows, in English with a Japanese note:
    - **Step 1** — `P12's close contacts in the ward (10/13–10/16): 6`. The graph stays in the **original ward layout**, fades everyone else, and zooms in on the index (red) and its 1st generation (orange) with orange lines, so you see where in the ward the contacts are.
    - **Step 2** (depth 2 only) — `Who they met afterwards: 26 (34 without time order)`. The 2nd generation turns yellow with yellow lines and the view zooms out to include them.
