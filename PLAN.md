@@ -253,13 +253,17 @@ WHERE c1.close AND ws <= c1.date <= we
 OPTIONAL MATCH (b)-[c2:CONTACT]-(c:Person)
 WHERE $depth >= 2 AND c2.close AND c <> a
   AND c2.date >= c1.date + duration({days: $latent})
-  AND NOT (a)-[:CONTACT {close: true}]-(c)
+  AND NOT EXISTS {
+    MATCH (a)-[x:CONTACT]-(c)
+    WHERE x.close AND ws <= x.date <= we
+  }
 RETURN a, ws, we, b, collect(DISTINCT c1) AS c1s,
        collect(DISTINCT {person: c, edge: c2}) AS second
 ```
 
 - 1段目＝b、2段目＝c（経由した b を記録）
 - 2段目から1段目に既に入っている人は除く（Python 側で重複排除してもよい）
+- 除外するのは、**感染可能期間内**に起点と濃厚接触した人（＝1段目）だけ。期間外にしか起点と接触していない人は、1段目経由で2段目に入りうる。期間を見ずに「起点と一度でも接触した人」を除くと、その人が1段目にも2段目にも出ず漏れる（例：P08 起点で N07 が漏れる）
 
 ### 7-2. 感染源の推定
 
@@ -267,7 +271,7 @@ RETURN a, ws, we, b, collect(DISTINCT c1) AS c1s,
 MATCH (p:Person {status: "positive"})
 WITH p, coalesce(p.onset_date, p.test_date) AS ref
 MATCH (p)-[c:CONTACT]-(x:Person)
-WHERE c.close
+WHERE c.close AND x.status <> "fever_negative"
   AND ref - duration({days: $inc_max}) <= c.date <= ref - duration({days: $inc_min})
 WITH x, collect(DISTINCT p.id) AS linked, collect(c) AS edges
 WHERE size(linked) >= 2
@@ -277,7 +281,8 @@ LIMIT 10
 ```
 
 - 陽性者自身も候補に入りうる（陽性者同士の連鎖）。それでよい
-- 起点は `status = "positive"` のみ → 発熱陰性者は候補にならない
+- 起点は `status = "positive"` のみ
+- 発熱陰性者は `x.status <> "fever_negative"` で**候補からも明示的に除外**する（起点を陽性者に限るだけでは、発熱陰性者が陽性者2人と接触していれば候補に出てしまう）
 
 ### 7-3. 画面用グラフ
 

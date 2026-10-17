@@ -65,7 +65,7 @@ LIMIT 50"""),
 MATCH (p:Person {status: "positive"})
 WITH p, coalesce(p.onset_date, p.test_date) AS ref
 MATCH (p)-[c:CONTACT]-(x:Person)
-WHERE c.close
+WHERE c.close AND x.status <> "fever_negative"
   AND ref - duration({days: 7}) <= c.date <= ref - duration({days: 2})
 WITH x, collect(DISTINCT p.id) AS linked
 WHERE size(linked) >= 2

@@ -257,9 +257,13 @@ def source_candidates(data, contacts):
             ref = p["onset_date"] or p["test_date"]
             windows[p["id"]] = (ref - timedelta(days=INCUBATION_MAX_DAYS),
                                 ref - timedelta(days=INCUBATION_MIN_DAYS))
+    fever_negative = {p["id"] for p in data["patients"] + data["staff"]
+                      if p["status"] == "fever_negative"}
     linked = defaultdict(set)
     for a, b, d in contacts:
         for pos, x in ((a, b), (b, a)):
+            if x in fever_negative:
+                continue
             if pos in windows and windows[pos][0] <= d <= windows[pos][1]:
                 linked[x].add(pos)
     return {x: ps for x, ps in linked.items() if len(ps) >= 2}

@@ -17,7 +17,10 @@ WHERE c1.close AND ws <= c1.date <= we
 OPTIONAL MATCH (b)-[c2:CONTACT]-(c:Person)
 WHERE $depth >= 2 AND c2.close AND c <> a
   AND c2.date >= c1.date + duration({days: $latent})
-  AND NOT (a)-[:CONTACT {close: true}]-(c)
+  AND NOT EXISTS {
+    MATCH (a)-[x:CONTACT]-(c)
+    WHERE x.close AND ws <= x.date <= we
+  }
 RETURN a, ws, we, b, collect(DISTINCT c1) AS c1s,
        collect(DISTINCT {person: c, edge: c2}) AS second
 """
@@ -26,7 +29,7 @@ SOURCE = """
 MATCH (p:Person {status: "positive"})
 WITH p, coalesce(p.onset_date, p.test_date) AS ref
 MATCH (p)-[c:CONTACT]-(x:Person)
-WHERE c.close
+WHERE c.close AND x.status <> "fever_negative"
   AND ref - duration({days: $inc_max}) <= c.date <= ref - duration({days: $inc_min})
 WITH x, collect(DISTINCT p.id) AS linked,
      collect({date: c.date, type: c.type, minutes: c.minutes, room_id: c.room_id,

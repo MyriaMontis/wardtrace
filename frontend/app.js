@@ -339,7 +339,7 @@ function renderSourceTable(rows) {
   }).join("");
   $("#tab-source").innerHTML = `
     <p class="summary">Positives: <b>${esc(positives.join(", "))}</b>.
-      Fever but test-negative (${esc(fever.join(", ") || "none")}) are never used as starting points.</p>
+      Fever but test-negative (${esc(fever.join(", ") || "none")}) are neither starting points nor candidates.</p>
     <table><thead><tr><th>#</th><th>ID</th><th>Name</th><th>Role</th><th>Status</th><th>Positives linked</th><th>Contacts within incubation window</th></tr></thead>
     <tbody>${body || `<tr><td colspan="7" class="muted">No one is linked to 2+ positives.</td></tr>`}</tbody></table>`;
   bindRowClicks("#tab-source");
