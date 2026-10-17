@@ -12,7 +12,7 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import config, queries
+from . import config, llm, queries
 from .db import close_driver
 from .load import load_all
 
@@ -34,6 +34,10 @@ class PositiveIn(BaseModel):
 class TraceIn(BaseModel):
     index_id: str
     depth: Literal[1, 2] = 2
+
+
+class AskIn(BaseModel):
+    question: str
 
 
 @app.get("/api/persons")
@@ -69,6 +73,11 @@ def trace(body: TraceIn):
 @app.get("/api/source")
 def source():
     return queries.source()
+
+
+@app.post("/api/ask")
+def ask(body: AskIn):
+    return llm.ask(body.question)
 
 
 @app.post("/api/reset")
