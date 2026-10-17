@@ -291,7 +291,7 @@ LIMIT 10
 
 | メソッド | パス | 入力 | 出力 |
 | --- | --- | --- | --- |
-| GET | `/api/persons` | — | `[{id, name, kind, role, status, room_id}]` |
+| GET | `/api/persons` | — | `[{id, name, kind, role, status, room_id, test_date, onset_date}]` |
 | GET | `/api/graph` | — | `{nodes: [...], edges: [...]}`（Cytoscape 形式） |
 | POST | `/api/positive` | `{id, test_date, onset_date?}` | 更新後の person。`status="positive"`、`isolated_date=test_date` |
 | POST | `/api/trace` | `{index_id, depth: 1\|2}` | 下記 |

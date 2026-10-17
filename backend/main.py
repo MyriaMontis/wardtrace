@@ -43,7 +43,8 @@ class AskIn(BaseModel):
 @app.get("/api/persons")
 def persons():
     return [
-        {k: p[k] for k in ("id", "name", "kind", "role", "status", "room_id")}
+        {k: p.get(k) for k in ("id", "name", "kind", "role", "status", "room_id",
+                               "test_date", "onset_date")}
         for p in queries.get_persons()
     ]
 

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WardTrace</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>WardTrace</h1>
+    <span class="sub">Ward 5E · Oct 10–16, 2026</span>
+    <span id="status" class="status"></span>
+    <button id="reset" class="ghost">Reset</button>
+  </header>
+
+  <aside>
+    <section>
+      <h2><span class="num">1</span> Mark positive</h2>
+      <label>Person
+        <select id="person"></select>
+      </label>
+      <div class="row">
+        <label>Test <input type="date" id="test-date" min="2026-10-10" max="2026-10-16"></label>
+        <label>Onset <input type="date" id="onset-date" min="2026-10-01" max="2026-10-16"></label>
+      </div>
+      <button id="mark">Mark positive</button>
+    </section>
+
+    <section>
+      <h2><span class="num">2</span> Trace</h2>
+      <div class="depth">
+        Depth
+        <label><input type="radio" name="depth" value="1" checked> 1</label>
+        <label><input type="radio" name="depth" value="2"> 2</label>
+      </div>
+      <button id="trace">Trace contacts</button>
+      <p class="hint">Infectious window: 2 days before onset → isolation. Depth 2 keeps only time-respecting chains.</p>
+    </section>
+
+    <section>
+      <h2><span class="num">3</span> Find source</h2>
+      <button id="source">Find source</button>
+      <p class="hint">People linked to 2+ positives within each one's incubation window (2–7 days before onset).</p>
+    </section>
+
+    <section>
+      <h2><span class="num">4</span> Ask</h2>
+      <textarea id="question" rows="3" placeholder="Who did N07 care for on night shifts?"></textarea>
+      <div class="chips">
+        <button class="chip" data-q="Who did N07 care for on night shifts?">N07 night shifts</button>
+        <button class="chip" data-q="P12と同じ病室にいた患者は？">P12 roommates (JA)</button>
+      </div>
+      <button id="ask">Ask</button>
+    </section>
+  </aside>
+
+  <main>
+    <div id="graph-wrap">
+      <div id="cy"></div>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--positive)"></i>Positive</span>
+        <span><i class="dot" style="background:var(--gen1)"></i>1st gen</span>
+        <span><i class="dot" style="background:var(--gen2)"></i>2nd gen</span>
+        <span><i class="dot fever"></i>Fever, test negative</span>
+        <span><i class="dot cand"></i>Source candidate</span>
+        <span><i class="dot"></i>Patient</span>
+        <span><i class="sq"></i>Staff</span>
+      </div>
+    </div>
+
+    <div id="panel">
+      <nav class="tabs">
+        <button data-tab="contacts" class="active">Contacts</button>
+        <button data-tab="source">Source</button>
+        <button data-tab="ask">Ask</button>
+      </nav>
+      <div id="tab-contacts" class="tab active"><p class="empty">Mark a positive or trace contacts. Click a node to see its contacts.</p></div>
+      <div id="tab-source" class="tab"><p class="empty">Click “Find source”.</p></div>
+      <div id="tab-ask" class="tab"><p class="empty">Ask a question in English or Japanese. The generated Cypher is shown so the query is auditable.</p></div>
+    </div>
+  </main>
+
+  <footer>Decision support only. Final decisions are made by the ICT (infection control team).</footer>
+
+  <script src="/vendor/cytoscape.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
