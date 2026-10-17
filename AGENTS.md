@@ -18,6 +18,7 @@
 - **Docker CLI** は `~/.docker/bin/docker`。新しいシェルなら PATH に入っている。見つからないときは `export PATH="$HOME/.docker/bin:$PATH"`
 - **Cytoscape.js**：`vendor/cytoscape.min.js`（v3.34.3）をローカルに保存済み。CDN で読み込むときも同じ版（`cytoscape@3.34.3`）を使い、会場のネットが落ちたらこのファイルに切り替える
 - **パッケージを追加・更新しない**。必要になったら先に人に確認する
+- テスト：`requirements-dev.txt`（pytest・httpx）を `.venv` に導入済み。`.venv/bin/python -m pytest -q tests` で 5章のシナリオを確認できる（Neo4j の起動が必要。テストは `/api/reset` でデータを入れ直す）
 
 ## GitHub に上げないもの（`.gitignore` 設定済み）
 

@@ -3,6 +3,7 @@
 実行：uvicorn backend.main:app --reload
 """
 
+from contextlib import asynccontextmanager
 from datetime import date
 from typing import Literal, Optional
 
@@ -15,7 +16,13 @@ from . import config, queries
 from .db import close_driver
 from .load import load_all
 
-app = FastAPI(title="WardTrace")
+@asynccontextmanager
+async def lifespan(app):
+    yield
+    close_driver()
+
+
+app = FastAPI(title="WardTrace", lifespan=lifespan)
 
 
 class PositiveIn(BaseModel):
@@ -27,11 +34,6 @@ class PositiveIn(BaseModel):
 class TraceIn(BaseModel):
     index_id: str
     depth: Literal[1, 2] = 2
-
-
-@app.on_event("shutdown")
-def shutdown():
-    close_driver()
 
 
 @app.get("/api/persons")
