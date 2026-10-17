@@ -481,19 +481,27 @@ client = OpenAI(base_url=AIAND_BASE_URL, api_key=AIAND_API_KEY)
 
 1. **Problem（30s）**：When COVID hits a hospital ward, the infection control team still traces contacts with paper and Excel. It's slow, and people get missed.
 2. **Mark positive（30s）**：P12 tests positive. One click → P12 turns red, and contacts within the infectious window (from 2 days before onset) light up.
-3. **Second generation（30s）**：Depth 2. Only time-respecting chains — B met C *after* A met B. Without this rule, 34 people; with it, 26 — eight false chains removed.
-4. **Find source（45s）**：Three positives in three different rooms. The graph finds the one person linked to all three within the incubation window: night nurse N07 — untested. Fever patients who tested negative are excluded.
+3. **Second generation（30s）**：Depth 2. Only time-respecting chains — B met C *after* A met B. Without this rule, 34 people; with it, 26 — eight don't fit the time order, so they drop out of this trace (that doesn't prove they're uninfected).
+4. **Find source（45s）**：Three positives in three different rooms. The graph finds the one person linked to all three within the incubation window: night nurse N07 — untested. In this demo the trace starts only from test-positive cases, so fever patients who tested negative don't become candidates.
 5. **Ask（30s）**：「Who did N07 care for on night shifts?」→ ai& turns it into Cypher; we show the query so it's auditable.
-6. **Why（15s）**：Neo4j for completeness and reproducibility, ai& (inference in Japan — patient data stays in the country) as the language layer. Decision support only.
+6. **Why（15s）**：Neo4j finds everyone the records connect, the same way every time; ai& (inference in Japan — patient data stays in the country) is the language layer. Decision support only — next step: a review-priority score from contact type, duration, PPE and procedures.
 
 ### 想定質問
-- **医療情報の正確さは？** → 判断はしない。記録から事実のつながりを出すだけ。パラメータ（2日前・潜伏期間）は画面で変えられる
+- **医療情報の正確さは？** → 判断はしない。記録から事実のつながりを出すだけ。期間（発症2日前・潜伏期間2〜7日）は設定値で変えられる
 - **実データは？** → 架空。実運用では電子カルテ・勤務表・検査予約から取り込む想定
 - **なぜLLMだけでやらない？** → 1章
 - **COCOAとの違いは？** → 1章
-- **全員検査するのでは？** → する。このツールは「全員」の範囲を漏れなく決め、感染源をさかのぼるためのもの
+- **全員検査するのでは？** → する。このツールは記録の範囲で「全員」を洗い出し、感染源をさかのぼるためのもの
 - **なぜ ai&？** → 患者データを国外に出さずに推論できる
 - **日本全体に広げられる？** → 次は病院間（転院・共通の外来）。人口全体は接触データがないので対象外
+- **26人も出たら使えなくない？** → 記録から拾う候補は広く残す。そのうえで経由者・日時・接触の種類で、誰の記録から確認するかを決められる。人数の多さだけで候補を削らない
+- **34→26なら、8人は感染していない？** → そこまでは言えない。8人は今回の時間順の条件を満たさない、という結果
+- **本当に漏れなく分かる？** → 入力された記録と設定した条件の範囲で抽出する。記録にない接触や感染経路までは保証しない
+- **陰性者を除外して大丈夫？** → 陰性結果だけでは感染を否定できない。今は「検査陽性者を起点にする」というデモの仕様。実運用では検査の種類・採取日を考え、一律には除外しない
+- **N07が出るように作っただけでは？** → その通りで、既知の筋書きを再現できるかの機能確認。精度の証明ではない。別の感染源・複数の感染源・記録の欠落でも評価が必要
+- **距離や時間は評価しないの？** → 今は国の基準に近い二択（濃厚かどうか）。次は「確認優先度スコア」：接触の種類・実際の時間・防護・エアロゾル発生処置・発症前後かを点数で足し、高・中・低で表示。2段目は経路の弱い方の接触の点数を採る。不明な項目は0点にせず「評価未完了」と出す。重みは仮置きで、感染対策担当者の評価との一致と、重みを±1変えたときの順位の安定性で検証する。感染確率ではなく、確認の順番を決めるための目安
+- **距離はどう測る？** → 距離は推定しない。担当・同室など記録にある接触状況を使う。将来はBLEバッジ等の実測も
+- **AIは何を良くしている？** → 定型の探索はDBで実行し、AIは自由な質問を検索につなぎ、結果を説明する。生成した検索文（Cypher）も画面で確認できる
 
 ---
 
