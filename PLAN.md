@@ -318,9 +318,12 @@ LIMIT 10
     {"id": "P07", "name": "...", "kind": "patient", "via": "N07",
      "contacts": [{"date": "2026-10-15", "type": "care"}]}
   ],
+  "second_gen_if_time_ignored": 34,
   "graph": {"nodes": [...], "edges": [...]}
 }
 ```
+
+- `second_gen_if_time_ignored`：時間順の条件（`c2.date >= c1.date + LATENT_DAYS`）を外した場合の2段目の人数。それ以外の条件（1段目と起点の除外など）は同じ。depth=1 のときは `null`。画面では「26 (34 if time order ignored)」と出し、時間順で除けた偽の連鎖の数をデモで示す
 
 ### Cytoscape 形式
 

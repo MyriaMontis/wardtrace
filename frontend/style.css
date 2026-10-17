@@ -120,6 +120,7 @@ main {
 
 h3 { font-size: 14px; margin: 4px 0 8px; }
 h3 .count { color: var(--muted); font-weight: 500; }
+h3 .count b { color: var(--text); }
 .summary { margin: 0 0 10px; }
 .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 

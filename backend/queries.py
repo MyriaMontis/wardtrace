@@ -25,6 +25,23 @@ RETURN a, ws, we, b, collect(DISTINCT c1) AS c1s,
        collect(DISTINCT {person: c, edge: c2}) AS second
 """
 
+# 時間順の条件だけを外した2段目の人数（デモで偽の連鎖の数を示す比較用）
+SECOND_GEN_IGNORING_TIME = """
+MATCH (a:Person {id: $index_id})
+WITH a,
+     coalesce(a.onset_date, a.test_date) - duration({days: $lookback}) AS ws,
+     coalesce(a.isolated_date, date("2099-12-31")) AS we
+MATCH (a)-[c1:CONTACT]-(b:Person)
+WHERE c1.close AND ws <= c1.date <= we
+MATCH (b)-[c2:CONTACT]-(c:Person)
+WHERE c2.close AND c <> a
+  AND NOT EXISTS {
+    MATCH (a)-[x:CONTACT]-(c)
+    WHERE x.close AND ws <= x.date <= we
+  }
+RETURN count(DISTINCT c) AS n
+"""
+
 SOURCE = """
 MATCH (p:Person {status: "positive"})
 WITH p, coalesce(p.onset_date, p.test_date) AS ref
@@ -198,12 +215,18 @@ def trace(index_id, depth=2):
     for p in second_gen:
         trace_edges[tuple(sorted((p["via"], p["id"])))] = _earliest(p["contacts"])
 
+    ignoring_time = None
+    if depth >= 2:
+        ignoring_time = _read(SECOND_GEN_IGNORING_TIME, index_id=index_id,
+                              lookback=config.INFECTIOUS_LOOKBACK_DAYS)[0]["n"]
+
     return {
         "index": {"id": index["id"], "name": index["name"], "kind": index["kind"],
                   "status": index["status"]},
         "window": window,
         "first_gen": first_gen,
         "second_gen": second_gen,
+        "second_gen_if_time_ignored": ignoring_time,
         "graph": build_graph(gen, trace_edges),
     }
 

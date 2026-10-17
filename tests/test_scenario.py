@@ -51,6 +51,14 @@ def test_trace_p12_first_gen(client, depth):
 def test_trace_depth1_has_no_second_gen(client):
     res = client.post("/api/trace", json={"index_id": "P12", "depth": 1}).json()
     assert res["second_gen"] == []
+    assert res["second_gen_if_time_ignored"] is None
+
+
+def test_time_order_removes_false_chains(client):
+    # P12 起点：時間順を守ると2段目は26人、無視すると34人（8人の偽の連鎖を除ける）
+    res = client.post("/api/trace", json={"index_id": "P12", "depth": 2}).json()
+    assert len(res["second_gen"]) == 26
+    assert res["second_gen_if_time_ignored"] == 34
 
 
 def test_trace_unknown_person(client):

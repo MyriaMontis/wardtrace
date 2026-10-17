@@ -175,7 +175,9 @@ async function trace() {
   renderTraceGraph(res);
   renderTraceTable(res);
   showTab("contacts");
-  setStatus(`Traced ${indexId}: ${res.first_gen.length} first-gen, ${res.second_gen.length} second-gen`);
+  const ignored = res.second_gen_if_time_ignored;
+  setStatus(`Traced ${indexId}: ${res.first_gen.length} first-gen, ${res.second_gen.length} second-gen` +
+    (ignored === null || ignored === undefined ? "" : ` (${ignored} if time order ignored)`));
 }
 
 function renderTraceGraph(res) {
@@ -229,6 +231,15 @@ function contactSummary(contacts, withRoom = true) {
   }).join("<br>");
 }
 
+// 2段目の人数。depth 2 なら時間順を無視した場合の人数も並べる（例：26 (34 if time order ignored)）
+function secondGenCount(res) {
+  const n = res.second_gen.length;
+  if (res.second_gen_if_time_ignored === null || res.second_gen_if_time_ignored === undefined) {
+    return `(${n}, depth 1)`;
+  }
+  return `<b>${n}</b> time-respecting <span class="ignored">(${res.second_gen_if_time_ignored} if time order ignored)</span>`;
+}
+
 function renderTraceTable(res) {
   const w = res.window;
   const end = w.end === "2099-12-31" ? "not isolated" : shortDate(w.end);
@@ -254,7 +265,7 @@ function renderTraceTable(res) {
         <tbody>${first || `<tr><td colspan="5" class="muted">None</td></tr>`}</tbody></table>
       </div>
       <div>
-        <h3>2nd generation <span class="count">(${res.second_gen.length}${depth() === 1 ? ", depth 1" : ", time-respecting"})</span></h3>
+        <h3>2nd generation <span class="count">${secondGenCount(res)}</span></h3>
         <table><thead><tr><th>ID</th><th>Status</th><th>Via</th><th>Contact (≥ 1 day after)</th></tr></thead>
         <tbody>${second || `<tr><td colspan="4" class="muted">${depth() === 1 ? "Set depth 2 to see the second generation." : "None"}</td></tr>`}</tbody></table>
       </div>
