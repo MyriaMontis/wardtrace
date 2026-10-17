@@ -9,49 +9,53 @@
 <body>
   <header>
     <h1>WardTrace</h1>
-    <span class="sub">Ward 5E · Oct 10–16, 2026</span>
+    <span class="sub">Ward 5E · Oct 10–16, 2026 <span class="ja">（5階東病棟・10/10〜10/16）</span></span>
     <span id="status" class="status"></span>
-    <button id="reset" class="ghost">Reset</button>
+    <button id="reset" class="ghost">Reset <span class="ja">（初期データに戻す）</span></button>
   </header>
 
   <aside>
     <section>
-      <h2><span class="num">1</span> Mark positive</h2>
-      <label>Person
+      <h2><span class="num">1</span> Mark positive <span class="ja">（陽性者を登録）</span></h2>
+      <label>Person <span class="ja">（対象者を選ぶ）</span>
         <select id="person"></select>
       </label>
       <div class="row">
-        <label>Test <input type="date" id="test-date" min="2026-10-10" max="2026-10-16"></label>
-        <label>Onset <input type="date" id="onset-date" min="2026-10-01" max="2026-10-16"></label>
+        <label>Test <span class="ja">（検査日）</span> <input type="date" id="test-date" min="2026-10-10" max="2026-10-16"></label>
+        <label>Onset <span class="ja">（発症日・任意）</span> <input type="date" id="onset-date" min="2026-10-01" max="2026-10-16"></label>
       </div>
       <button id="mark">Mark positive</button>
+      <p class="hint ja-block">（日付を入れて押すと陽性登録し、そのまま追跡）</p>
     </section>
 
     <section>
-      <h2><span class="num">2</span> Trace</h2>
+      <h2><span class="num">2</span> Trace <span class="ja">（接触者を追跡）</span></h2>
       <div class="depth">
-        Depth
+        Depth <span class="ja">（何段先まで）</span>
         <label><input type="radio" name="depth" value="1" checked> 1</label>
         <label><input type="radio" name="depth" value="2"> 2</label>
       </div>
       <button id="trace">Trace contacts</button>
       <p class="hint">Infectious window: 2 days before onset → isolation. Depth 2 keeps only time-respecting chains.</p>
+      <p class="hint ja-block">（発症2日前〜隔離日の接触を追跡。2段目は時間順を守る連鎖だけ）</p>
     </section>
 
     <section>
-      <h2><span class="num">3</span> Find source</h2>
+      <h2><span class="num">3</span> Find source <span class="ja">（感染源を推定）</span></h2>
       <button id="source">Find source</button>
       <p class="hint">People linked to 2+ positives within each one's incubation window (2–7 days before onset).</p>
+      <p class="hint ja-block">（潜伏期間内に陽性者2人以上と接触した人を表示）</p>
     </section>
 
     <section>
-      <h2><span class="num">4</span> Ask</h2>
-      <textarea id="question" rows="3" placeholder="Who did N07 care for on night shifts?"></textarea>
+      <h2><span class="num">4</span> Ask <span class="ja">（AIに質問）</span></h2>
+      <textarea id="question" rows="2" placeholder="Who did N07 care for on night shifts?"></textarea>
       <div class="chips">
         <button class="chip" data-q="Who did N07 care for on night shifts?">N07 night shifts</button>
         <button class="chip" data-q="P12と同じ病室にいた患者は？">P12 roommates (JA)</button>
       </div>
       <button id="ask">Ask</button>
+      <p class="hint ja-block">（英語・日本語OK。読み取り専用で実行。⌘+Enterで送信）</p>
     </section>
   </aside>
 
@@ -59,29 +63,29 @@
     <div id="graph-wrap">
       <div id="cy"></div>
       <div class="legend">
-        <span><i class="dot" style="background:var(--positive)"></i>Positive</span>
-        <span><i class="dot" style="background:var(--gen1)"></i>1st gen</span>
-        <span><i class="dot" style="background:var(--gen2)"></i>2nd gen</span>
-        <span><i class="dot fever"></i>Fever, test negative</span>
-        <span><i class="dot cand"></i>Source candidate</span>
-        <span><i class="dot"></i>Patient</span>
-        <span><i class="sq"></i>Staff</span>
+        <span><i class="dot" style="background:var(--positive)"></i>Positive <span class="ja">（陽性）</span></span>
+        <span><i class="dot" style="background:var(--gen1)"></i>1st gen <span class="ja">（1段目）</span></span>
+        <span><i class="dot" style="background:var(--gen2)"></i>2nd gen <span class="ja">（2段目）</span></span>
+        <span><i class="dot fever"></i>Fever, test negative <span class="ja">（発熱・検査陰性）</span></span>
+        <span><i class="dot cand"></i>Source candidate <span class="ja">（感染源候補）</span></span>
+        <span><i class="dot"></i>Patient <span class="ja">（患者）</span></span>
+        <span><i class="sq"></i>Staff <span class="ja">（職員）</span></span>
       </div>
     </div>
 
     <div id="panel">
       <nav class="tabs">
-        <button data-tab="contacts" class="active">Contacts</button>
-        <button data-tab="source">Source</button>
-        <button data-tab="ask">Ask</button>
+        <button data-tab="contacts" class="active">Contacts <span class="ja">（接触者）</span></button>
+        <button data-tab="source">Source <span class="ja">（感染源）</span></button>
+        <button data-tab="ask">Ask <span class="ja">（質問）</span></button>
       </nav>
-      <div id="tab-contacts" class="tab active"><p class="empty">Mark a positive or trace contacts. Click a node to see its contacts.</p></div>
-      <div id="tab-source" class="tab"><p class="empty">Click “Find source”.</p></div>
-      <div id="tab-ask" class="tab"><p class="empty">Ask a question in English or Japanese. The generated Cypher is shown so the query is auditable.</p></div>
+      <div id="tab-contacts" class="tab active"><p class="empty">Mark a positive or trace contacts. Click a node to see its contacts.<br><span class="ja">（陽性者を登録するか、接触者を追跡してください。グラフの点をクリックすると、その人の接触一覧が出ます）</span></p></div>
+      <div id="tab-source" class="tab"><p class="empty">Click “Find source”.<br><span class="ja">（左の「Find source」を押してください）</span></p></div>
+      <div id="tab-ask" class="tab"><p class="empty">Ask a question in English or Japanese. The generated Cypher is shown so the query is auditable.<br><span class="ja">（英語か日本語で質問してください。AIが作った Cypher も表示されるので、何を調べたか確認できます）</span></p></div>
     </div>
   </main>
 
-  <footer>Decision support only. Final decisions are made by the ICT (infection control team).</footer>
+  <footer>Decision support only. Final decisions are made by the ICT (infection control team). <span class="ja">（判断の補助ツールです。最終判断は感染対策チームが行います）</span></footer>
 
   <script src="/vendor/cytoscape.min.js"></script>
   <script src="app.js"></script>

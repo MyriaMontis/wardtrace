@@ -44,7 +44,7 @@ function setStatus(text) {
 }
 
 async function busy(button, label, fn) {
-  const old = button.textContent;
+  const old = button.innerHTML;  // 日本語の <span class="ja"> も含めて戻す
   button.disabled = true;
   button.textContent = label;
   try {
@@ -54,7 +54,7 @@ async function busy(button, label, fn) {
     console.error(e);
   } finally {
     button.disabled = false;
-    button.textContent = old;
+    button.innerHTML = old;
   }
 }
 
@@ -350,7 +350,8 @@ function renderSourceTable(rows) {
   }).join("");
   $("#tab-source").innerHTML = `
     <p class="summary">Positives: <b>${esc(positives.join(", "))}</b>.
-      Fever but test-negative (${esc(fever.join(", ") || "none")}) are neither starting points nor candidates.</p>
+      Fever but test-negative (${esc(fever.join(", ") || "none")}) are neither starting points nor candidates.
+      <span class="ja">（発熱したが検査陰性の人は、起点にも候補にも入れません）</span></p>
     <table><thead><tr><th>#</th><th>ID</th><th>Name</th><th>Role</th><th>Status</th><th>Positives linked</th><th>Contacts within incubation window</th></tr></thead>
     <tbody>${body || `<tr><td colspan="7" class="muted">No one is linked to 2+ positives.</td></tr>`}</tbody></table>`;
   bindRowClicks("#tab-source");
@@ -375,7 +376,7 @@ async function ask() {
   const question = $("#question").value.trim() || $("#question").placeholder;
   $("#question").value = question;
   showTab("ask");
-  $("#tab-ask").innerHTML = `<p class="question">Q: ${esc(question)}</p><p class="muted">Asking ai&amp;…</p>`;
+  $("#tab-ask").innerHTML = `<p class="question">Q: ${esc(question)}</p><p class="muted">Asking ai&amp;… <span class="ja">（ai&amp; に問い合わせ中…）</span></p>`;
   const res = await api("/api/ask", { question });
 
   const ids = idsIn(res.rows);
@@ -414,9 +415,9 @@ async function reset() {
   fillPersonSelect();
   initGraph(await api("/api/graph"));
   prefillDates();
-  $("#tab-contacts").innerHTML = `<p class="empty">Data reset. Mark a positive or trace contacts.</p>`;
-  $("#tab-source").innerHTML = `<p class="empty">Click “Find source”.</p>`;
-  $("#tab-ask").innerHTML = `<p class="empty">Ask a question in English or Japanese.</p>`;
+  $("#tab-contacts").innerHTML = `<p class="empty">Data reset. Mark a positive or trace contacts.<br><span class="ja">（初期データに戻しました。陽性者を登録するか、接触者を追跡してください）</span></p>`;
+  $("#tab-source").innerHTML = `<p class="empty">Click “Find source”.<br><span class="ja">（左の「Find source」を押してください）</span></p>`;
+  $("#tab-ask").innerHTML = `<p class="empty">Ask a question in English or Japanese.<br><span class="ja">（英語か日本語で質問してください）</span></p>`;
   showTab("contacts");
   setStatus("Data reset");
 }
