@@ -105,6 +105,18 @@ main {
   background: rgba(255,255,255,.92); border: 1px solid var(--line); border-radius: 6px;
 }
 .legend span { display: flex; align-items: center; gap: 5px; }
+
+/* 追跡後に右上に出す病棟全体の縮小図（最初の配置のまま）。右下は凡例と重なるので右上 */
+#mini-wrap {
+  position: absolute; right: 12px; top: 10px;
+  width: 250px; padding: 4px 6px 6px;
+  background: rgba(255,255,255,.95); border: 1px solid var(--line); border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08); cursor: pointer;
+}
+#mini-wrap[hidden] { display: none; }
+#mini-wrap:hover { border-color: var(--accent); }
+.mini-title { font-size: 11px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+#mini { width: 100%; height: 170px; }
 .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; background: var(--node); }
 .dot.fever { background: var(--fever); border: 1.5px dashed #6b7280; }
 .dot.cand { background: var(--node); box-shadow: 0 0 0 3px var(--positive); }

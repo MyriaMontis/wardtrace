@@ -31,7 +31,7 @@ PLAN.md の実装順はすべて完了し、12章のデモ（P12陽性 → Trace
   - `/api/trace` は `second_gen_if_time_ignored`（時間順の条件だけを外した2段目の人数。depth 1 は null）も返す
   - 7-1：2段目から外すのは「感染可能期間内に起点と濃厚接触した人」だけ（期間外の接触だけの人は2段目に出る）
   - 7-2：発熱陰性者は `x.status <> "fever_negative"` で候補からも明示的に除外
-  - 追跡後のレイアウトは concentric（起点を中心に1段目・2段目・無関係の順で外側へ）。初期表示は cose
+  - 追跡後のレイアウトは concentric（起点を中心に1段目・2段目・無関係の順で外側へ）。初期表示は cose。追跡後は右上に最初の配置の縮小図（Ward overview）を出し、全体図とのつながりを残す
 - ai&：本命 `openai/gpt-oss-120b`（日英6問で正解、1問2〜4秒）。予備 `deepseek-ai/deepseek-v4-flash` も6問正解だが遅い。ユーザーは gpt-oss を希望。回答の言語は Python 側で判定して指示している
 - 期待される数字（違ったら Reset）
   - 初期データ：陽性者は P05・P18 の2人。**P12 は untested**（検査日 10/16・発症日 10/15 は記録済み、隔離日は空）でグラフでは灰色。感染源は N07 だけ（2人と接触）
@@ -57,6 +57,7 @@ PLAN.md の実装順はすべて完了し、12章のデモ（P12陽性 → Trace
 | Reset | `#reset` | `POST /api/reset` で初期データに戻し、グラフも描き直す |
 | ステータス | `#status` | 直前の操作の結果（例 `Traced P12: 6 first-gen, 26 second-gen (34 if time order ignored)`）。エラーは `Error: ...` |
 | タブ | `.tabs button[data-tab=contacts\|source\|ask]` | 結果パネルの切り替え |
+| 病棟全体の縮小図 | `#mini-wrap`（中の図は `#mini`、変数 `mini`） | 追跡すると右上に出る。最初の配置のまま、メインと同じ色で強調する。クリックするとメインの図を最初の配置に戻し（色はそのまま）、縮小図は隠れる。Reset でも隠れる |
 | グラフ | `#cy`（Cytoscape。ページ上の変数 `cy`） | ノードをクリックすると、その人の接触一覧が `#tab-contacts` に出る。表の行をクリックするとそのノードに移動する |
 
 - 処理中はボタンが無効になり、文言が `Tracing…` などに変わる。元の文言に戻るまで待つ

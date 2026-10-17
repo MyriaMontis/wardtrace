@@ -118,6 +118,7 @@ Marking a new person positive changes the data until you press **Reset**.
 1. **Depth**: `1` (default) = close contacts only; `2` = also their contacts.
 2. Click **Trace contacts**. The index case is the person selected in Step 1 (`POST /api/trace`).
 3. The graph rearranges (about 1 second of animation): the index in the center, the 1st generation in the inner ring (orange), the 2nd generation in the outer ring (yellow), everyone else faded at the edge. It then zooms to the related people. Trace lines are orange (index → 1st) and yellow (1st → 2nd).
+   A small **Ward overview** appears at the top right of the graph: the whole ward in the *original* layout from the first screen, with the same colors, so you can see where the chain sits in the ward. Click it to move the main graph back to the original layout (colors stay); press **Trace contacts** again to return to the index-centered view.
 4. The **Contacts** tab opens:
    - Summary line: `Index P12 Tanaka (positive) · infectious window 10/13 → 10/16`. The window is 2 days before onset (or test date) until isolation.
    - Left table **1st generation (6)**: ID, Name, Kind, Status, and close contacts grouped by type with dates and room, e.g. `care: 10/13, 10/14, 10/15, 10/16 (502)`.
@@ -150,7 +151,8 @@ Expected: "Who did N07 care for on night shifts?" → 18 patients (P01, P02, P03
 ### Other interactions
 
 - **Click a node**: the Contacts tab lists that person's close contacts over the whole period (ID, status, contact types, dates). Example: N07 → 18 people.
-- **Reset**: reloads the initial data (`POST /api/reset`), redraws the full graph and clears all tabs.
+- **Ward overview** (top right, after a trace): mirrors every highlight (trace, source, ask) on the original layout. Click it to show that layout in the main graph.
+- **Reset**: reloads the initial data (`POST /api/reset`), redraws the full graph and clears all tabs. The Ward overview is hidden until the next trace.
 - **Tabs** can be switched freely; each keeps its last result.
 
 ---

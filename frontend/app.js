@@ -111,24 +111,101 @@ function initGraph(graph) {
     minZoom: 0.3,
     maxZoom: 3,
   });
-  runCose(false);
-  cy.on("tap", "node", (evt) => showPersonContacts(evt.target.id()));
-}
-
-function runCose(animate) {
-  cy.layout({
-    name: "cose", animate, animationDuration: 500, randomize: !animate,
+  $("#mini-wrap").hidden = true;
+  const layout = cy.layout({
+    name: "cose", animate: false, randomize: true,
     nodeRepulsion: () => 9000, idealEdgeLength: () => 60, padding: 30,
-  }).run();
+  });
+  layout.one("layoutstop", initMini);
+  layout.run();
+  cy.on("tap", "node", (evt) => showPersonContacts(evt.target.id()));
 }
 
 function clearHighlights() {
   cy.elements().removeClass("gen1 gen2 index candidate hit dim trace1 trace2 source-edge");
+  syncMini();
+}
+
+// ---------------------------------------------------------------- ward overview (minimap)
+// 追跡するとメインの図は起点中心の配置に変わるので、最初の配置（病棟全体）を右下に小さく残す。
+// 色や強調はメインの図と同じにする。クリックするとメインの図を最初の配置に戻す。
+
+let mini = null;
+let wardPositions = {};
+
+const MINI_STYLE = [
+  { selector: "node", style: { "width": 7, "height": 7, "background-color": "#cbd5e1", "border-width": 0, "label": "" } },
+  { selector: "node[kind = 'staff']", style: { "shape": "round-rectangle", "background-color": "#94a3b8" } },
+  { selector: "node.gen1", style: { "background-color": "#f97316", "width": 10, "height": 10 } },
+  { selector: "node.gen2", style: { "background-color": "#facc15", "width": 8, "height": 8 } },
+  { selector: "node[status = 'positive']", style: { "background-color": "#dc2626" } },
+  { selector: "node[status = 'fever_negative']", style: {
+    "background-color": "#e5e7eb", "border-width": 1, "border-style": "dashed", "border-color": "#6b7280",
+  } },
+  { selector: "node.index", style: { "width": 14, "height": 14 } },
+  { selector: "node.candidate", style: { "border-width": 2.5, "border-color": "#b91c1c", "width": 13, "height": 13 } },
+  { selector: "node.hit", style: { "border-width": 2, "border-color": "#2563eb" } },
+  { selector: "edge", style: { "width": 0.5, "line-color": "#e2e8f0", "opacity": 0.7, "curve-style": "haystack" } },
+  { selector: "edge.trace1", style: { "width": 1.6, "line-color": "#f97316", "opacity": 1 } },
+  { selector: "edge.trace2", style: { "width": 0.8, "line-color": "#eab308", "opacity": 0.9 } },
+  { selector: "edge.source-edge", style: { "width": 1.6, "line-color": "#dc2626", "opacity": 1 } },
+  { selector: "node.dim", style: { "opacity": 0.3 } },
+  { selector: "edge.dim", style: { "opacity": 0.08 } },
+];
+
+function initMini() {
+  if (mini) mini.destroy();
+  wardPositions = {};
+  cy.nodes().forEach((n) => { wardPositions[n.id()] = { ...n.position() }; });
+  mini = cytoscape({
+    container: $("#mini"),
+    elements: cy.elements().jsons().map((j) => (
+      j.group === "nodes" ? { group: "nodes", data: j.data, position: j.position } : { group: "edges", data: j.data })),
+    style: MINI_STYLE,
+    layout: { name: "preset", fit: true, padding: 6 },
+    userZoomingEnabled: false,
+    userPanningEnabled: false,
+    boxSelectionEnabled: false,
+    autoungrabify: true,
+    autounselectify: true,
+  });
+}
+
+function syncMini() {
+  if (!mini) return;
+  mini.batch(() => {
+    cy.elements().forEach((e) => {
+      const m = mini.getElementById(e.id());
+      if (m.empty()) return;
+      m.classes(e.classes());
+      if (e.isNode()) m.data("status", e.data("status"));
+    });
+  });
+}
+
+function showMini() {
+  const wrap = $("#mini-wrap");
+  wrap.hidden = false;
+  if (mini) {
+    mini.resize();  // 非表示の間はサイズが 0 なので、表示してから合わせ直す
+    mini.fit(undefined, 6);
+  }
+}
+
+function showWardInMain() {
+  // メインの図を最初の配置（病棟全体）に戻す。色や強調はそのまま
+  cy.layout({
+    name: "preset", positions: (n) => wardPositions[n.id()],
+    animate: true, animationDuration: 500, fit: true, padding: 30,
+  }).run();
+  $("#mini-wrap").hidden = true;
 }
 
 function updateNodeData(p) {
   const n = cy.getElementById(p.id);
   if (n.nonempty()) n.data("status", p.status);
+  const m = mini && mini.getElementById(p.id);
+  if (m && m.nonempty()) m.data("status", p.status);
 }
 
 // ---------------------------------------------------------------- 1. mark positive
@@ -217,6 +294,8 @@ function renderTraceGraph(res) {
   });
   layout.one("layoutstop", () => cy.animate({ fit: { eles: related, padding: 50 }, duration: 400 }));
   layout.run();
+  syncMini();
+  showMini();
 }
 
 function contactSummary(contacts, withRoom = true) {
@@ -326,6 +405,7 @@ async function findSource() {
     cy.nodes().forEach((n) => { if (!keep.has(n.id())) n.addClass("dim"); });
     cy.edges().forEach((e) => { if (!e.hasClass("source-edge")) e.addClass("dim"); });
   });
+  syncMini();
   if (rows.length) {
     cy.animate({ fit: { eles: cy.nodes().filter((n) => keep.has(n.id())), padding: 120 }, duration: 500 });
   }
@@ -389,6 +469,7 @@ async function ask() {
         if (!(ids.has(e.source().id()) && ids.has(e.target().id()))) e.addClass("dim");
       });
     });
+    syncMini();
   }
 
   const cols = res.rows.length ? Object.keys(res.rows[0]) : [];
@@ -443,6 +524,7 @@ async function init() {
   }));
   document.querySelectorAll(".tabs button").forEach((b) =>
     b.addEventListener("click", () => showTab(b.dataset.tab)));
+  $("#mini-wrap").addEventListener("click", showWardInMain);
 }
 
 init().catch((e) => {
