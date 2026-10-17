@@ -280,24 +280,67 @@ async function trace() {
 let traceRun = 0;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-function animateFit(eles, padding, duration) {
-  return cy.animation({ fit: { eles, padding }, duration, easing: "ease-in-out-cubic" }).play().promise();
+const EASING = "ease-in-out-cubic";
+const MAX_FOCUS_ZOOM = 1.8;  // 少人数にズームしたときに大きくなりすぎないように
+
+// positions（id → 座標）に点を置いたとき、ids の人が padding 付きで収まるカメラ（zoom と pan）
+function viewportFor(positions, ids, padding) {
+  let x1 = Infinity, y1 = Infinity, x2 = -Infinity, y2 = -Infinity;
+  ids.forEach((id) => {
+    const p = positions[id];
+    if (!p) return;
+    x1 = Math.min(x1, p.x); y1 = Math.min(y1, p.y);
+    x2 = Math.max(x2, p.x); y2 = Math.max(y2, p.y);
+  });
+  const margin = 24;  // 点の大きさとラベルのぶん
+  const bw = x2 - x1 + margin * 2, bh = y2 - y1 + margin * 2;
+  let zoom = Math.min((cy.width() - padding * 2) / bw, (cy.height() - padding * 2) / bh);
+  zoom = Math.max(cy.minZoom(), Math.min(MAX_FOCUS_ZOOM, zoom));
+  return { zoom, pan: { x: cy.width() / 2 - zoom * (x1 + x2) / 2, y: cy.height() / 2 - zoom * (y1 + y2) / 2 } };
 }
 
-async function toWardLayout(duration) {
-  // メインの図を最初の配置（病棟全体）に戻す。すでにその配置なら何もしない
-  const moved = cy.nodes().some((n) => {
-    const p = n.position(), w = wardPositions[n.id()];
-    return w && (Math.abs(p.x - w.x) > 1 || Math.abs(p.y - w.y) > 1);
-  });
-  if (!moved) return;
+// 点の移動とカメラの移動を、同じ時間・同じ動き方で同時に行う。
+// （点だけ先に動かしてあとからカメラが追いかけると、図が左右に揺れて見える）
+async function moveTo(positions, ids, padding, duration) {
+  const view = viewportFor(positions, ids, padding);
   const layout = cy.layout({
-    name: "preset", positions: (n) => wardPositions[n.id()],
-    animate: true, animationDuration: duration, fit: false,
+    name: "preset", positions: (n) => positions[n.id()] || n.position(),
+    animate: true, animationDuration: duration, animationEasing: EASING, fit: false,
   });
-  const done = layout.pon("layoutstop");
+  const nodesDone = layout.pon("layoutstop");
+  const cameraDone = cy.animation({ zoom: view.zoom, pan: view.pan, duration, easing: EASING }).play().promise();
   layout.run();
-  await done;
+  // タブが裏に回ると描画が止まり、アニメーションが終わらないことがある。
+  // 予定より1秒過ぎたら最後の状態へ飛ばして先へ進む（ボタンが押せないままにならないように）
+  await Promise.race([Promise.all([nodesDone, cameraDone]), sleep(duration + 1000)]);
+  if (cy.animated() || cy.nodes().some((n) => n.animated())) {
+    cy.nodes().stop(true, true);
+    cy.stop(true, true);
+    cy.batch(() => cy.nodes().forEach((n) => { if (positions[n.id()]) n.position(positions[n.id()]); }));
+    cy.viewport({ zoom: view.zoom, pan: view.pan });
+  }
+}
+
+// 起点を中心にした輪の配置を、画面を動かさずに計算する。
+// 輪の中心は起点の今の位置にして、並べ替えで図が大きく動かないようにする
+function concentricPositions(gen, indexId) {
+  const saved = {};
+  cy.nodes().forEach((n) => { saved[n.id()] = { ...n.position() }; });
+  const c = saved[indexId];
+  cy.layout({
+    name: "concentric",
+    concentric: (n) => ({ 0: 3, 1: 2, 2: 1 }[gen[n.id()]] ?? 0),
+    levelWidth: () => 1,
+    minNodeSpacing: 14,
+    animate: false,
+    fit: false,
+    boundingBox: { x1: c.x - 500, y1: c.y - 500, w: 1000, h: 1000 },
+  }).run();
+  const target = {};
+  cy.nodes().forEach((n) => { target[n.id()] = { ...n.position() }; });
+  // 描画される前に元の位置へ戻す（同じ処理の中なので画面はちらつかない）
+  cy.batch(() => cy.nodes().forEach((n) => n.position(saved[n.id()])));
+  return target;
 }
 
 function caption(en, ja) {
@@ -332,9 +375,9 @@ async function renderTraceGraph(res) {
   const w = res.window;
   const windowText = `${shortDate(w.start)}–${w.end === "2099-12-31" ? "now" : shortDate(w.end)}`;
 
-  // ① 最初の配置で、起点と1段目
-  await toWardLayout(500);
-  if (!alive()) return;
+  const ids = (eles) => eles.map((n) => n.id());
+
+  // ① 最初の配置で、起点と1段目（前の追跡で並べ替えていたら、点とカメラを一緒に元の配置へ戻す）
   cy.batch(() => {
     cy.elements().addClass("dim");
     byGen(0).removeClass("dim").addClass("index");
@@ -344,7 +387,8 @@ async function renderTraceGraph(res) {
   syncMini();
   caption(`Step 1 · ${index}'s close contacts in the ward (${windowText}): ${res.first_gen.length} people`,
     `（病棟の配置のまま、${index} と感染可能期間に濃厚接触した人を表示）`);
-  await animateFit(byGen(0).union(byGen(1)), 90, 900);
+  await moveTo(wardPositions, ids(byGen(0).union(byGen(1))), 90, 900);
+  if (!alive()) return;
   await sleep(1400);
   if (!alive()) return;
 
@@ -359,7 +403,8 @@ async function renderTraceGraph(res) {
     caption(`Step 2 · Who they met afterwards (time-respecting): ${res.second_gen.length} people` +
       (ignored === null || ignored === undefined ? "" : ` — ${ignored} if time order were ignored`),
       "（1段目の人が、そのあと（1日以上後）に接触した人＝2段目）");
-    await animateFit(related, 50, 900);
+    await moveTo(wardPositions, ids(related), 50, 900);
+    if (!alive()) return;
     await sleep(1400);
     if (!alive()) return;
   }
@@ -368,22 +413,10 @@ async function renderTraceGraph(res) {
   caption(`Step ${res.second_gen.length ? 3 : 2} · Re-arranged around ${index}: 1st gen inner ring` +
     (res.second_gen.length ? ", 2nd gen outer ring" : ""),
     `（${index} を中心に整理。外側の薄い点は無関係の人。右上の小さな図が元の配置）`);
-  const layout = cy.layout({
-    name: "concentric",
-    concentric: (n) => ({ 0: 3, 1: 2, 2: 1 }[gen[n.id()]] ?? 0),
-    levelWidth: () => 1,
-    minNodeSpacing: 14,
-    animate: true,
-    animationDuration: 1000,
-    animationEasing: "ease-in-out-cubic",
-    fit: false,
-  });
-  const done = layout.pon("layoutstop");
-  layout.run();
-  await done;
+  // 輪の配置を先に計算し、点とカメラを同時に動かす
+  await moveTo(concentricPositions(gen, index), ids(related), 50, 1100);
   if (!alive()) return;
   showMini();
-  await animateFit(related, 50, 500);
   // 字幕はしばらく残してから消す（ボタンはここで押せるように戻す）
   setTimeout(() => { if (alive()) hideCaption(); }, 3500);
 }
