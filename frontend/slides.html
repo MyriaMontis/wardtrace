@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WardTrace — Slides</title>
+<style>
+  :root {
+    --navy: #0f1f3d;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --red: #dc2626;
+    --orange: #f97316;
+    --yellow: #facc15;
+    --soft: #f6f7f9;
+    --ok: #16a34a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #0b1426; overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", sans-serif; color: var(--ink); }
+  .deck { position: fixed; inset: 0; display: grid; place-items: center; }
+  .slide {
+    position: absolute; width: min(100vw, 177.78vh); height: min(56.25vw, 100vh);
+    background: #fff; padding: 5.5% 7%; display: none; flex-direction: column;
+  }
+  .slide.active { display: flex; }
+  .kicker { font-size: clamp(12px, 1.4vw, 22px); letter-spacing: .14em; text-transform: uppercase; color: var(--red); font-weight: 700; }
+  h1 { font-size: clamp(28px, 4.6vw, 76px); line-height: 1.08; color: var(--navy); margin-top: 1.2%; font-weight: 800; letter-spacing: -.01em; }
+  h2 { font-size: clamp(22px, 3.2vw, 52px); color: var(--navy); margin-top: 1%; font-weight: 800; }
+  .lead { font-size: clamp(14px, 1.9vw, 30px); color: var(--muted); margin-top: 2.5%; max-width: 80%; line-height: 1.4; }
+  .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center;
+    font-size: clamp(11px, 1.2vw, 18px); color: var(--muted); border-top: 1px solid var(--line); padding-top: 1.6%; }
+  .brand { font-weight: 800; color: var(--navy); }
+  .brand span { color: var(--red); }
+
+  /* slide 1 */
+  .pains { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3%; margin-top: 5%; }
+  .pain { background: var(--soft); border-radius: 14px; padding: 7% 8%; border-top: 5px solid var(--red); }
+  .pain b { display: block; font-size: clamp(16px, 2.2vw, 36px); color: var(--navy); }
+  .pain p { font-size: clamp(12px, 1.4vw, 22px); color: var(--muted); margin-top: 6%; line-height: 1.4; }
+
+  /* slide 2 */
+  table { width: 100%; border-collapse: collapse; margin-top: 3%; font-size: clamp(11px, 1.45vw, 23px); }
+  th, td { padding: 1.25% 1.4%; text-align: center; border-bottom: 1px solid var(--line); }
+  th:first-child, td:first-child { text-align: left; color: var(--ink); }
+  thead th { color: var(--muted); font-weight: 600; font-size: .9em; }
+  thead th.us { color: #fff; background: var(--navy); border-radius: 10px 10px 0 0; }
+  td.us { background: #eef2ff; font-weight: 800; }
+  .y { color: var(--ok); font-weight: 800; }
+  .n { color: #cbd5e1; font-weight: 800; }
+  .p { color: #d97706; font-weight: 800; }
+  .x { color: var(--red); font-weight: 900; font-size: 1.15em; }
+  .note { font-size: clamp(10px, 1.1vw, 17px); color: var(--muted); margin-top: 1.6%; }
+
+  /* slide 3 */
+  .demo { display: grid; grid-template-columns: 1.1fr 1fr; gap: 6%; margin-top: 3%; align-items: center; flex: 1; }
+  .steps { list-style: none; counter-reset: s; }
+  .steps li { counter-increment: s; display: flex; align-items: baseline; gap: 4%; padding: 3.2% 0; border-bottom: 1px solid var(--line);
+    font-size: clamp(14px, 1.9vw, 30px); color: var(--navy); font-weight: 700; }
+  .steps li::before { content: counter(s); flex: 0 0 auto; width: 1.6em; height: 1.6em; border-radius: 50%; background: var(--navy); color: #fff;
+    display: grid; place-items: center; font-size: .7em; }
+  .steps li small { display: block; font-weight: 400; color: var(--muted); font-size: .62em; margin-top: .3em; }
+  .stat { background: var(--soft); border-radius: 18px; padding: 8%; text-align: center; }
+  .stat .big { font-size: clamp(36px, 6.4vw, 108px); font-weight: 800; color: var(--navy); line-height: 1; }
+  .stat .big em { font-style: normal; color: var(--red); }
+  .stat p { font-size: clamp(12px, 1.4vw, 22px); color: var(--muted); margin-top: 5%; line-height: 1.4; }
+  .open { display: inline-block; margin-top: 7%; background: var(--red); color: #fff; text-decoration: none; font-weight: 700;
+    padding: .7em 1.4em; border-radius: 999px; font-size: clamp(13px, 1.5vw, 24px); }
+
+  /* slide 4 */
+  .next { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3%; margin-top: 4%; }
+  .card { border: 1px solid var(--line); border-radius: 14px; padding: 7% 8%; }
+  .card b { display: block; font-size: clamp(15px, 2vw, 32px); color: var(--navy); }
+  .card p { font-size: clamp(11px, 1.3vw, 21px); color: var(--muted); margin-top: 6%; line-height: 1.45; }
+  .tag { display: inline-block; font-size: clamp(9px, 1vw, 15px); background: #fef2f2; color: var(--red); font-weight: 700;
+    padding: .25em .7em; border-radius: 999px; margin-bottom: 6%; }
+  .close { margin-top: 5%; font-size: clamp(14px, 2vw, 32px); color: var(--navy); font-weight: 700; }
+  .close span { color: var(--red); }
+
+  .dots { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+  .dots i { width: 8px; height: 8px; border-radius: 50%; background: #cbd5e1; }
+  .dots i.on { background: var(--navy); }
+  .hint { position: fixed; right: 16px; bottom: 10px; color: #64748b; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <section class="slide">
+    <div class="kicker">The problem</div>
+    <h1>When COVID hits a hospital ward,<br>contact tracing is still done<br>with paper and Excel.</h1>
+    <div class="pains">
+      <div class="pain"><b>Slow</b><p>Rooms, shifts and test logs live in separate records. Someone joins them by hand.</p></div>
+      <div class="pain"><b>Easy to miss</b><p>Second-hand contacts — through a nurse, a shared X-ray room — fall through the cracks.</p></div>
+      <div class="pain"><b>Hard to trace back</b><p>Three cases in three rooms. What do they have in common?</p></div>
+    </div>
+    <div class="foot"><span class="brand">Ward<span>Trace</span></span><span>Neo4j × ai&amp; · +81 Builders</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">Why WardTrace</div>
+    <h2>Graph accuracy + a plain-language window</h2>
+    <table>
+      <thead><tr><th></th><th>Paper / Excel</th><th>COCOA<br><span style="font-weight:400">(Japan's COVID app, 2020–22)</span></th><th>LLM only</th><th class="us">WardTrace</th></tr></thead>
+      <tbody>
+        <tr><td>Uses hospital records (rooms, care, tests)</td><td class="y">✓</td><td class="x">✗</td><td class="p">△</td><td class="us y">✓</td></tr>
+        <tr><td>Multi-hop chains (A → B → C)</td><td class="p">△ by hand</td><td class="x">✗</td><td class="p">△</td><td class="us y">✓</td></tr>
+        <tr><td>Time-respecting chains</td><td class="p">△ by hand</td><td class="x">✗</td><td class="x">✗</td><td class="us y">✓</td></tr>
+        <tr><td>Same result every time, auditable query</td><td class="p">△</td><td class="n">—</td><td class="x">✗</td><td class="us y">✓</td></tr>
+        <tr><td>Ask in plain language</td><td class="x">✗</td><td class="x">✗</td><td class="y">✓</td><td class="us y">✓</td></tr>
+        <tr><td>Patient data stays in Japan</td><td class="y">✓</td><td class="y">✓</td><td class="p">△ depends</td><td class="us y">✓</td></tr>
+      </tbody>
+    </table>
+    <p class="note">COCOA sent anonymous proximity alerts; it could not follow chains. LLM only: thousands of records → missed rows, answers vary between runs.</p>
+    <div class="foot"><span class="brand">Ward<span>Trace</span></span><span>Neo4j finds the connections · ai&amp; (inference in Japan) turns questions into Cypher</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">Live demo</div>
+    <h2>One positive test. Two minutes.</h2>
+    <div class="demo">
+      <ol class="steps">
+        <li><div>Mark positive<small>P12 tests positive — infectious from 2 days before onset</small></div></li>
+        <li><div>Trace contacts<small>1st and 2nd generation, time-respecting only</small></div></li>
+        <li><div>Find source<small>Who links all three positives within the incubation window?</small></div></li>
+        <li><div>Ask<small>Plain language → Cypher, shown on screen</small></div></li>
+      </ol>
+      <div class="stat">
+        <div class="big">34 → <em>26</em></div>
+        <p>2nd-generation contacts without vs. with the time-order rule.<br>8 people don't fit the time order in this trace.</p>
+        <a class="open" href="/">Open WardTrace →</a>
+      </div>
+    </div>
+    <div class="foot"><span class="brand">Ward<span>Trace</span></span><span>Fictional ward data · no real patients</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">What's next</div>
+    <h2>From "who" to "who first"</h2>
+    <div class="next">
+      <div class="card"><span class="tag">Next</span><b>Review-priority score</b><p>Contact type, exposure time, PPE, aerosol procedures, timing vs. onset. Unknown = "not yet assessed", never zero.</p></div>
+      <div class="card"><span class="tag">Scale</span><b>Whole hospital → across hospitals</b><p>Transfers and shared outpatient clinics connect wards and hospitals.</p></div>
+      <div class="card"><span class="tag">Data</span><b>Straight from the records</b><p>Import from EHR, staff rosters and test bookings. Keep an audit trail of every query.</p></div>
+    </div>
+    <p class="close">Decision support only — <span>final decisions stay with the infection control team.</span></p>
+    <div class="foot"><span class="brand">Ward<span>Trace</span></span><span>github.com/MyriaMontis/wardtrace</span></div>
+  </section>
+
+</div>
+<div class="dots"></div>
+<div class="hint">← → to move · F for full screen</div>
+<script>
+  const slides = [...document.querySelectorAll(".slide")];
+  const dots = document.querySelector(".dots");
+  slides.forEach(() => dots.appendChild(document.createElement("i")));
+  let i = 0;
+  try { i = Math.min(+location.hash.slice(1) || 0, slides.length - 1); } catch (e) {}
+  function show(n) {
+    i = Math.max(0, Math.min(n, slides.length - 1));
+    slides.forEach((s, k) => s.classList.toggle("active", k === i));
+    [...dots.children].forEach((d, k) => d.classList.toggle("on", k === i));
+    history.replaceState(null, "", "#" + i);
+  }
+  document.addEventListener("keydown", (e) => {
+    if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); show(i + 1); }
+    if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); show(i - 1); }
+    if (e.key === "f" || e.key === "F") {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.();
+    }
+  });
+  document.addEventListener("click", (e) => { if (!e.target.closest("a")) show(i + 1); });
+  show(i);
+</script>
+</body>
+</html>

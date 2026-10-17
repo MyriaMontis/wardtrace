@@ -234,4 +234,13 @@ tests/     test_scenario.py, test_llm_safety.py, test_regressions.py
 vendor/    cytoscape.min.js 3.34.3 (MIT)
 ```
 
+## Roadmap
+
+Not implemented yet — planned next steps:
+
+- **Review-priority score** (not an infection probability): rank contacts by contact type, actual exposure time, PPE, aerosol-generating procedures and timing relative to onset. Unknown items are shown as "not yet assessed", never scored as zero. For second-generation paths, a path scores as its weakest link. Weights are provisional and would be validated against infection-control staff judgement and checked for rank stability.
+- **Richer records**: real stay/care durations, PPE and procedure logs, measured proximity (e.g. BLE badges).
+- **Scale**: whole hospital, then across hospitals (transfers, shared outpatient clinics).
+- **Operations**: import from EHR, rosters and test bookings; keep an audit trail of scores, reasons and rule versions.
+
 Built for the +81 Builders hackathon (2026-10-17). The UI is plain HTML/JS; the only front-end library is [Cytoscape.js](https://js.cytoscape.org/) (MIT).
