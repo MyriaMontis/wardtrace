@@ -97,8 +97,8 @@
   "sex": "F",
   "admitted_date": "2026-10-01",
   "room_id": "502",
-  "status": "negative",
-  "test_date": "2026-10-16",
+  "status": "untested",
+  "test_date": null,
   "onset_date": null,
   "isolated_date": null,
   "fever_date": null
@@ -149,10 +149,10 @@
   "sex": "M",
   "admitted_date": "2026-10-09",
   "room_id": "502",
-  "status": "positive",
+  "status": "untested",
   "test_date": "2026-10-16",
   "onset_date": "2026-10-15",
-  "isolated_date": "2026-10-16",
+  "isolated_date": null,
   "fever_date": null
  },
  {
@@ -318,8 +318,8 @@
   "sex": "F",
   "admitted_date": "2026-10-03",
   "room_id": "502",
-  "status": "negative",
-  "test_date": "2026-10-16",
+  "status": "untested",
+  "test_date": null,
   "onset_date": null,
   "isolated_date": null,
   "fever_date": null

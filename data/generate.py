@@ -53,6 +53,7 @@ POSITIVES = {
     "P18": {"room": "505", "onset": date(2026, 10, 15), "test": date(2026, 10, 16)},
 }
 FEVER_NEGATIVES = {"P03": date(2026, 10, 14), "P22": date(2026, 10, 15)}
+DEMO_INDEX = "P12"  # 初期データでは untested。デモで Mark positive を押して陽性にする
 
 
 def hhmm(minutes):
@@ -133,10 +134,15 @@ def build():
     for pid, info in POSITIVES.items():
         by_id[pid].update(status="positive", onset_date=info["onset"],
                           test_date=info["test"], isolated_date=info["test"])
+    # デモの起点 P12 は、検査日・発症日は記録済みだがまだ untested。
+    # デモで Mark positive を押すと陽性（隔離日＝検査日）になる
+    by_id[DEMO_INDEX].update(status="untested", isolated_date=None)
     for pid, fever in FEVER_NEGATIVES.items():
         by_id[pid].update(status="fever_negative", fever_date=fever, test_date=fever)
-    # 陽性者の同室者は、陽性判明日にスクリーニング検査で陰性
+    # 陽性者の同室者は、陽性判明日にスクリーニング検査で陰性（まだ陽性でない P12 の同室者は除く）
     for pid, info in POSITIVES.items():
+        if pid == DEMO_INDEX:
+            continue
         for p in patients:
             if p["room_id"] == info["room"] and p["status"] == "untested":
                 p.update(status="negative", test_date=info["test"])
@@ -208,8 +214,10 @@ def build():
         staff.append({"id": sid, "name": name, "role": role, "status": "untested",
                       "test_date": None, "onset_date": None, "isolated_date": None})
     # 陽性者の日勤受け持ち看護師は 10/16 に検査して陰性。夜勤の N07 は未検査のまま
+    # （まだ陽性でない P12 の受け持ちは除く）
+    tested_nurses = {n for pid, n in day_primary.items() if pid != DEMO_INDEX}
     for s in staff:
-        if s["id"] in day_primary.values():
+        if s["id"] in tested_nurses:
             s.update(status="negative", test_date=date(2026, 10, 16))
 
     # --- 勤務（ナースステーション）---
@@ -280,15 +288,30 @@ def first_gen(data, contacts, index_id):
     return out
 
 
+def mark_demo_index_positive(data):
+    """デモの Mark positive（P12 を陽性・隔離日＝検査日）を適用したコピーを返す。"""
+    patients = []
+    for p in data["patients"]:
+        if p["id"] == DEMO_INDEX:
+            p = {**p, "status": "positive", "isolated_date": p["test_date"]}
+        patients.append(p)
+    return {**data, "patients": patients}
+
+
 def check(data):
     contacts = close_contacts(data)
-    candidates = source_candidates(data, contacts)
-    assert candidates == {SOURCE: set(POSITIVES)}, f"source candidates: {candidates}"
+    others = set(POSITIVES) - {DEMO_INDEX}
+    # 初期データ：陽性者は P05・P18 の2人。候補は N07 だけ
+    before = source_candidates(data, contacts)
+    assert before == {SOURCE: others}, f"source candidates before demo: {before}"
+    # P12 を陽性にした後：N07 が陽性者3人全員とつながる
+    after = source_candidates(mark_demo_index_positive(data), contacts)
+    assert after == {SOURCE: set(POSITIVES)}, f"source candidates after demo: {after}"
     roommates = {p["id"] for p in data["patients"]
-                 if p["room_id"] == POSITIVES["P12"]["room"] and p["id"] != "P12"}
-    gen1 = first_gen(data, contacts, "P12")
+                 if p["room_id"] == POSITIVES[DEMO_INDEX]["room"] and p["id"] != DEMO_INDEX}
+    gen1 = first_gen(mark_demo_index_positive(data), contacts, DEMO_INDEX)
     assert SOURCE in gen1 and roommates <= gen1, f"P12 first gen: {sorted(gen1)}"
-    return candidates, gen1
+    return after, gen1
 
 
 def main():
@@ -300,8 +323,8 @@ def main():
             json.dump(rows, f, ensure_ascii=False, indent=1, default=str)
     print(f"wrote {OUT_DIR}: " + ", ".join(f"{k}={len(v)}" for k, v in data.items()))
     for x, ps in candidates.items():
-        print(f"source candidate: {x} linked to {sorted(ps)}")
-    print(f"P12 first gen: {sorted(gen1)}")
+        print(f"source candidate after marking {DEMO_INDEX} positive: {x} linked to {sorted(ps)}")
+    print(f"{DEMO_INDEX} first gen: {sorted(gen1)}")
 
 
 if __name__ == "__main__":

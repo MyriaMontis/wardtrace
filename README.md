@@ -101,15 +101,15 @@ On first load the graph shows all 45 people and 304 close-contact pairs in a for
 
 ## How to use it (step by step)
 
-The initial data already contains three positives (P05, P12, P18). The steps below are the 3-minute demo and the expected results on fresh data. Press **Reset** (top right) any time to restore the initial data.
+The initial data has two positives, **P05** and **P18**. **P12** (the demo's index case) is still **untested**, but its test date (10/16) and onset date (10/15) are already recorded, so it starts as a grey node. The steps below are the 3-minute demo and the expected results on fresh data. Press **Reset** (top right) any time to restore the initial data.
 
 ### Step 1 — Mark positive
 
-1. **Person** dropdown: choose who tested positive. Each option reads `ID Name · room or role · status`, e.g. `P12 Tanaka · room 502 · positive`. P12 is selected on load.
+1. **Person** dropdown: choose who tested positive. Each option reads `ID Name · room or role · status`, e.g. `P12 Tanaka · room 502 · untested`. P12 is selected on load.
 2. **Test** date and **Onset** date are filled in automatically when you change the person:
-   - a person who is already positive → their recorded dates (P12: test 2026-10-16, onset 2026-10-15);
+   - a person with recorded dates → those dates (P12: test 2026-10-16, onset 2026-10-15);
    - anyone else → test 2026-10-16, onset empty (onset is optional; without it the test date is used).
-3. Click **Mark positive**. This sets the person's status to positive with isolation date = test date (`POST /api/positive`), then **immediately runs Step 2** with the depth currently selected. The status line shows e.g. `P12 marked positive (test 10/16, onset 10/15)`, then the trace result.
+3. Click **Mark positive**. This sets the person's status to positive with isolation date = test date (`POST /api/positive`), then **immediately runs Step 2** with the depth currently selected. **P12's node turns from grey to red**, the dropdown now says `positive`, and the status line shows `P12 marked positive (test 10/16, onset 10/15)`, then the trace result.
 
 Marking a new person positive changes the data until you press **Reset**.
 
@@ -125,7 +125,7 @@ Marking a new person positive changes the data until you press **Reset**.
    - Click any row to center that person in the graph.
 5. Status line: `Traced P12: 6 first-gen, 26 second-gen (34 if time order ignored)`.
 
-Expected for P12 on fresh data: 1st generation = D01, N05, **N07**, P08, P25, R01 (roommates P08 and P25 plus the staff who cared for P12). 2nd generation = 26 with time order, 34 without — **8 false chains removed**. Example of a removed chain: N10 cared for P25 only on 10/12–10/13, but P25's contact with P12 started on 10/13, so P12 → P25 → N10 is impossible.
+Expected for P12 after Step 1 on fresh data: 1st generation = D01, N05, **N07**, P08, P25, R01 (roommates P08 and P25 plus the staff who cared for P12). 2nd generation = 26 with time order, 34 without — **8 false chains removed**. Example of a removed chain: N10 cared for P25 only on 10/12–10/13, but P25's contact with P12 started on 10/13, so P12 → P25 → N10 is impossible.
 
 ### Step 3 — Find source
 
@@ -136,7 +136,7 @@ Expected for P12 on fresh data: 1st generation = D01, N05, **N07**, P08, P25, R0
    - Table: rank, ID, Name, Role, Status, **Positives linked** (`3 / 3`), and contacts within each positive's incubation window (2–7 days before onset), e.g. `P05: 10/10 care, 10/11 care, 10/12 care`.
 4. Status line: `Top source candidate: N07 (linked to 3 positives)`.
 
-Expected on fresh data: exactly one candidate, **N07 (night nurse, untested)**, linked to all three positives, who are in three different rooms (501, 502, 505). P03 and P22 (fever, test negative) do not appear.
+Expected after Step 1 on fresh data: exactly one candidate, **N07 (night nurse, untested)**, linked to all three positives, who are in three different rooms (501, 502, 505). P03 and P22 (fever, test negative) do not appear. If you press Find source *before* marking P12, N07 is still the only candidate but linked to 2 / 2 (P05, P18).
 
 ### Step 4 — Ask (ai&)
 
@@ -187,7 +187,7 @@ Generated Cypher is rejected if it contains `CREATE`, `MERGE`, `DELETE`, `DETACH
 
 Fictional ward 5E, 2026-10-10 to 10-16. Rooms 501–508 (4 beds), X-ray, lab, nurse station. Patients P01–P30, nurses N01–N12 (N01–N06 day, N07–N12 night), doctors D01–D02, radiographer R01. `data/generate.py` uses `random.seed(42)` and checks the scenario before writing.
 
-Scenario: night nurse **N07 (untested)** infected **P05** (room 501, onset 10/14), **P12** (room 502, onset 10/15, the demo's index case) and **P18** (room 505, onset 10/15). Their only common link is N07's night care. **P03** and **P22** had fever but tested negative.
+Scenario: night nurse **N07 (untested)** infected **P05** (room 501, onset 10/14), **P12** (room 502, onset 10/15, the demo's index case — **untested in the initial data** with its test and onset dates recorded; the demo marks it positive) and **P18** (room 505, onset 10/15). Their only common link is N07's night care. **P03** and **P22** had fever but tested negative.
 
 Graph: `(:Person:Patient)`, `(:Person:Staff)`, `(:Room)`; source records `STAYED_IN`, `CARED_FOR`, `VISITED`, `WORKED`; derived `CONTACT {date, type, minutes, room_id, close}` (`same_room`, `care`, `visit_overlap` ≥ 15 min are close; `same_shift` is not).
 
@@ -204,7 +204,7 @@ Neo4j must be running. The tests reload the initial data (`/api/reset`).
 .venv/bin/python -m pytest -q tests
 ```
 
-23 tests: the demo scenario (N07 first, P03/P22 excluded, P12's 1st generation, 26 vs 34), LLM safety checks (no LLM call needed), and regressions (a fever-negative person linked to two positives is still excluded; an out-of-window contact does not hide someone from the 2nd generation).
+26 tests: the initial data (P12 untested with dates, N07 linked to 2), the demo scenario after marking P12 positive (P12 turns positive, N07 first with 3, P03/P22 excluded, P12's 1st generation, 26 vs 34), LLM safety checks (no LLM call needed), and regressions (a fever-negative person linked to two positives is still excluded; an out-of-window contact does not hide someone from the 2nd generation).
 
 ## Troubleshooting
 

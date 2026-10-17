@@ -207,18 +207,20 @@ AIAND_MODEL=openai/gpt-oss-120b
 
 ### 仕込むシナリオ（正解）
 - **感染源：夜勤看護師 N07**。10/11〜10/13 の夜勤で担当した患者に移した。本人は**未検査**（`status: "untested"`、onset_date なし）
-- 陽性者 3人：
-  - **P12**（502号室）：10/15 発症、10/16 検査陽性 → **デモの起点（index）**
-  - **P05**（501号室）：10/14 発症、10/15 検査陽性
-  - **P18**（505号室）：10/15 発症、10/16 検査陽性
+- N07 から感染した3人（シナリオ上の陽性者）：
+  - **P12**（502号室）：10/15 発症、10/16 検査 → **デモの起点（index）**。初期データでは **`status: "untested"`**（検査日・発症日は記録済み、隔離日は空）。デモで **Mark positive** を押すと陽性になり（隔離日＝検査日）、グラフで赤くなる
+  - **P05**（501号室）：10/14 発症、10/15 検査陽性（初期データから positive）
+  - **P18**（505号室）：10/15 発症、10/16 検査陽性（初期データから positive）
   - 3人は**別々の病室**で、**共通点は N07 の夜勤担当だけ**になるよう組む（同じ医師・同じ検査室時間にならないよう注意）
 - 発熱陰性者 2人：**P03**、**P22**（発熱あり、検査陰性）
-- それ以外の人は `negative` または `untested`
+- それ以外の人は `negative` または `untested`（P05・P18 の同室者と日勤の受け持ち看護師は検査陰性。P12 はまだ陽性でないので、その同室者や受け持ちは untested）
 - 隔離日：陽性判明日（test_date）
 
 ### 期待される結果（テストに使う）
-- `/api/trace`（P12起点）：同室の患者と、P12を担当したスタッフ（N07含む）が1段目に出る
-- `/api/source`：**N07 が1位**（陽性者3人全員と潜伏期間内に接触）。P03・P22 は出ない
+- 初期データ（`/api/reset` 直後）：陽性者は P05・P18 の2人。`/api/source` は **N07 だけ**（2人と接触、`n = 2`）
+- デモで P12 を Mark positive（検査 10/16・発症 10/15）した後：
+  - `/api/trace`（P12起点）：感染可能期間 10/13〜10/16。同室の患者と、P12を担当したスタッフ（N07含む）が1段目に出る（D01, N05, N07, P08, P25, R01）。2段目は26人（時間順を無視すると34人）
+  - `/api/source`：**N07 が1位**（陽性者3人全員と潜伏期間内に接触、`n = 3`）。P03・P22 は出ない
 
 ### 出力
 `data/out/` に `patients.json` `staff.json` `rooms.json` `stays.json` `cares.json` `visits.json` `shifts.json`
@@ -455,8 +457,8 @@ client = OpenAI(base_url=AIAND_BASE_URL, api_key=AIAND_API_KEY)
 ## 12. 3分デモ（英語）
 
 1. **Problem（30s）**：When COVID hits a hospital ward, the infection control team still traces contacts with paper and Excel. It's slow, and people get missed.
-2. **Mark positive（30s）**：P12 tests positive. One click → contacts within the infectious window (from 2 days before onset) light up.
-3. **Second generation（30s）**：Depth 2. Only time-respecting chains — B met C *after* A met B. Without this, you get dozens of false chains.
+2. **Mark positive（30s）**：P12 tests positive. One click → P12 turns red, and contacts within the infectious window (from 2 days before onset) light up.
+3. **Second generation（30s）**：Depth 2. Only time-respecting chains — B met C *after* A met B. Without this rule, 34 people; with it, 26 — eight false chains removed.
 4. **Find source（45s）**：Three positives in three different rooms. The graph finds the one person linked to all three within the incubation window: night nurse N07 — untested. Fever patients who tested negative are excluded.
 5. **Ask（30s）**：「Who did N07 care for on night shifts?」→ ai& turns it into Cypher; we show the query so it's auditable.
 6. **Why（15s）**：Neo4j for completeness and reproducibility, ai& (inference in Japan — patient data stays in the country) as the language layer. Decision support only.

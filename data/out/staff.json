@@ -39,8 +39,8 @@
   "id": "N05",
   "name": "Nishimura",
   "role": "nurse",
-  "status": "negative",
-  "test_date": "2026-10-16",
+  "status": "untested",
+  "test_date": null,
   "onset_date": null,
   "isolated_date": null
  },

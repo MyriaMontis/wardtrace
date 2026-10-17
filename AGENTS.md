@@ -22,7 +22,7 @@
 
 ## 実装状況（2026-10-17 時点）
 
-PLAN.md の実装順はすべて完了し、12章のデモ（P12陽性 → Trace depth2 → Find source → Ask）が最後まで通る。テストは23件すべて通過。詳しい使い方・API・画面の説明は **README.md**（英語）にある。
+PLAN.md の実装順はすべて完了し、12章のデモ（P12陽性 → Trace depth2 → Find source → Ask）が最後まで通る。テストは26件すべて通過。詳しい使い方・API・画面の説明は **README.md**（英語）にある。
 
 - 起動手順：`docker compose up -d` → `.venv/bin/python data/generate.py` → `.venv/bin/python -m backend.load` → `.venv/bin/python -m uvicorn backend.main:app --port 8000` → http://localhost:8000
 - Claude Code のプレビューでは `.claude/launch.json` の `wardtrace`（uvicorn、ポート 8000、`--reload` 付き）で起動できる。`frontend/` を作ったあとは、`main.py` が読み込まれ直すまで `/` が配信されない（`--reload` は .py の変更で再起動する）
@@ -33,9 +33,9 @@ PLAN.md の実装順はすべて完了し、12章のデモ（P12陽性 → Trace
   - 7-2：発熱陰性者は `x.status <> "fever_negative"` で候補からも明示的に除外
   - 追跡後のレイアウトは concentric（起点を中心に1段目・2段目・無関係の順で外側へ）。初期表示は cose
 - ai&：本命 `openai/gpt-oss-120b`（日英6問で正解、1問2〜4秒）。予備 `deepseek-ai/deepseek-v4-flash` も6問正解だが遅い。ユーザーは gpt-oss を希望。回答の言語は Python 側で判定して指示している
-- 期待される数字（初期データ。違ったら Reset）
-  - P12 起点：感染可能期間 10/13〜10/16、1段目6人（D01, N05, N07, P08, P25, R01）、2段目26人（時間順を無視すると34人）
-  - 感染源：N07 だけ（P05・P12・P18 の3人と接触）。P03・P22 は出ない
+- 期待される数字（違ったら Reset）
+  - 初期データ：陽性者は P05・P18 の2人。**P12 は untested**（検査日 10/16・発症日 10/15 は記録済み、隔離日は空）でグラフでは灰色。感染源は N07 だけ（2人と接触）
+  - デモで P12 を Mark positive した後：P12 が赤くなる。P12 起点の感染可能期間 10/13〜10/16、1段目6人（D01, N05, N07, P08, P25, R01）、2段目26人（時間順を無視すると34人）。感染源は N07 だけ（P05・P12・P18 の3人と接触）。P03・P22 は出ない
   - グラフ：45人、濃厚接触のペア304本
   - Ask「Who did N07 care for on night shifts?」→ 患者18人
 
@@ -45,7 +45,7 @@ PLAN.md の実装順はすべて完了し、12章のデモ（P12陽性 → Trace
 
 | 要素 | セレクタ | 動き |
 | --- | --- | --- |
-| 対象者 | `#person`（select） | 値は ID（例 `P12`）。初期値は P12。変えると検査日・発症日が自動で入る（陽性者は登録済みの日付、それ以外は検査日 2026-10-16・発症日は空） |
+| 対象者 | `#person`（select） | 値は ID（例 `P12`）。初期値は P12。変えると検査日・発症日が自動で入る（記録済みの日付があればそれ、なければ検査日 2026-10-16・発症日は空） |
 | 検査日・発症日 | `#test-date`, `#onset-date`（date） | `YYYY-MM-DD`。発症日は任意 |
 | Mark positive | `#mark` | `POST /api/positive` のあと、選択中の depth で自動的に Trace まで実行する。データが変わるので、終わったら Reset する |
 | Depth | `input[name=depth]`（value `1` / `2`） | 初期値は 1 |

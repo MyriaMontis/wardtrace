@@ -142,11 +142,11 @@ function fillPersonSelect() {
 }
 
 function prefillDates() {
-  // 陽性者なら登録済みの日付を入れる（P12 は 10/15 発症・10/16 検査）。それ以外は 10/16 検査
+  // 記録済みの検査日・発症日があれば入れる（デモの P12 は untested だが 10/16 検査・10/15 発症が記録済み）。
+  // なければ検査日 10/16・発症日は空
   const p = personById($("#person").value);
-  const positive = p && p.status === "positive";
-  $("#test-date").value = (positive && p.test_date) || "2026-10-16";
-  $("#onset-date").value = (positive && p.onset_date) || "";
+  $("#test-date").value = (p && p.test_date) || "2026-10-16";
+  $("#onset-date").value = (p && p.onset_date) || "";
 }
 
 async function markPositive() {
