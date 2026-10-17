@@ -97,6 +97,11 @@ const STYLE = [
   { selector: "edge.trace1", style: { "width": 3, "line-color": "#f97316", "opacity": 1 } },
   { selector: "edge.trace2", style: { "width": 1.6, "line-color": "#eab308", "opacity": 0.9 } },
   { selector: "edge.source-edge", style: { "width": 3.5, "line-color": "#dc2626", "opacity": 1 } },
+  // 2段目は追跡後は薄く表示（色の意味は同じ）。1段目をクリックすると、経由する経路だけ濃くする
+  { selector: "node.faint", style: { "opacity": 0.3 } },
+  { selector: "edge.faint", style: { "opacity": 0.12 } },
+  { selector: "edge.via-path", style: { "width": 2.6, "line-color": "#eab308", "opacity": 1 } },
+  { selector: "node.via-focus", style: { "border-width": 3, "border-color": "#1f2937" } },
   { selector: ".dim", style: { "opacity": 0.12 } },
   { selector: "edge.dim", style: { "opacity": 0.04 } },
   // Person 欄で選ばれている人：青い光がゆっくり点滅する（薄くされていても見えるようにする）
@@ -134,11 +139,14 @@ function initGraph(graph) {
   });
   layout.one("layoutstop", initMini);
   layout.run();
-  cy.on("tap", "node", (evt) => showPersonContacts(evt.target.id()));
+  cy.on("tap", "node", (evt) => onNodeTap(evt.target));
+  cy.on("tap", (evt) => { if (evt.target === cy && viaFocus) setViaFocus(null); });
 }
 
 function clearHighlights() {
-  cy.elements().removeClass("gen1 gen2 index candidate hit dim trace1 trace2 source-edge");
+  cy.elements().removeClass("gen1 gen2 index candidate hit dim trace1 trace2 source-edge faint via-path via-focus");
+  lastTrace = null;
+  viaFocus = null;
   syncMini();
 }
 
@@ -267,8 +275,9 @@ function depth() {
 async function trace() {
   const indexId = $("#person").value;
   const res = await api("/api/trace", { index_id: indexId, depth: depth() });
-  // 表とステータスは先に出し、グラフは段階的に見せる
+  // 表・人数・ステータスは先に出し、グラフは段階的に見せる
   renderTraceTable(res);
+  renderCounts(res, null);
   showTab("contacts");
   const ignored = res.second_gen_if_time_ignored;
   setStatus(`Traced ${indexId}: ${res.first_gen.length} first-gen, ${res.second_gen.length} second-gen` +
@@ -285,6 +294,7 @@ const MAX_FOCUS_ZOOM = 1.8;  // 少人数にズームしたときに大きくな
 
 // positions（id → 座標）に点を置いたとき、ids の人が padding 付きで収まるカメラ（zoom と pan）
 function viewportFor(positions, ids, padding) {
+  cy.resize();  // グラフ領域の大きさが変わっていても正しく計算できるように、測り直す
   let x1 = Infinity, y1 = Infinity, x2 = -Infinity, y2 = -Infinity;
   ids.forEach((id) => {
     const p = positions[id];
@@ -313,12 +323,13 @@ async function moveTo(positions, ids, padding, duration) {
   // タブが裏に回ると描画が止まり、アニメーションが終わらないことがある。
   // 予定より1秒過ぎたら最後の状態へ飛ばして先へ進む（ボタンが押せないままにならないように）
   await Promise.race([Promise.all([nodesDone, cameraDone]), sleep(duration + 1000)]);
-  if (cy.animated() || cy.nodes().some((n) => n.animated())) {
-    cy.nodes().stop(true, true);
-    cy.stop(true, true);
-    cy.batch(() => cy.nodes().forEach((n) => { if (positions[n.id()]) n.position(positions[n.id()]); }));
-    cy.viewport({ zoom: view.zoom, pan: view.pan });
-  }
+  // 終わっていても終わっていなくても、残っているアニメーション（まだ始まっていない待ちの分も）を消して、
+  // 最後の状態に合わせる。正常に終わっていれば同じ値を入れ直すだけ
+  layout.stop();
+  cy.nodes().stop(true, false);
+  cy.stop(true, false);
+  cy.batch(() => cy.nodes().forEach((n) => { if (positions[n.id()]) n.position(positions[n.id()]); }));
+  cy.viewport({ zoom: view.zoom, pan: view.pan });
 }
 
 // 起点を中心にした輪の配置を、画面を動かさずに計算する。
@@ -362,6 +373,7 @@ async function renderTraceGraph(res) {
   const alive = () => run === traceRun;
   cy.stop(true, false);
   clearHighlights();
+  lastTrace = res;
   $("#mini-wrap").hidden = true;
 
   const gen = {};
@@ -410,15 +422,89 @@ async function renderTraceGraph(res) {
   }
 
   // ③ 起点を中心に並べ替える（抽象化）
-  caption(`Step ${res.second_gen.length ? 3 : 2} · Re-arranged around ${index}: 1st gen inner ring` +
-    (res.second_gen.length ? ", 2nd gen outer ring" : ""),
-    `（${index} を中心に整理。外側の薄い点は無関係の人。右上の小さな図が元の配置）`);
+  const has2 = res.second_gen.length > 0;
+  caption(`Step ${has2 ? 3 : 2} · Re-arranged around ${index}: 1st gen inner ring` +
+    (has2 ? ", 2nd gen outer ring (faded). Click a 1st-gen person to see their 2nd-gen paths" : ""),
+    `（${index} を中心に整理。外側の薄い点は無関係の人。右上の小さな図が元の配置` +
+    (has2 ? "。2段目は薄く表示し、1段目の人をクリックするとその人を経由する2段目だけ濃くなる）" : "）"));
+  // 2段目は薄くする（色の意味はそのまま）
+  if (has2) {
+    cy.batch(() => {
+      byGen(2).addClass("faint");
+      cy.edges(".trace2").addClass("faint");
+    });
+  }
   // 輪の配置を先に計算し、点とカメラを同時に動かす
   await moveTo(concentricPositions(gen, index), ids(related), 50, 1100);
   if (!alive()) return;
   showMini();
   // 字幕はしばらく残してから消す（ボタンはここで押せるように戻す）
-  setTimeout(() => { if (alive()) hideCaption(); }, 3500);
+  setTimeout(() => { if (alive()) hideCaption(); }, has2 ? 6000 : 3500);
+}
+
+// ---------------------------------------------------------------- 1段目をクリック → 経由する2段目を強調
+
+let lastTrace = null;  // 表示中の追跡結果（感染源推定・質問・Reset で null）
+let viaFocus = null;   // 経路を強調している1段目の人の ID
+
+function onNodeTap(node) {
+  if (lastTrace && node.hasClass("gen1") && lastTrace.second_gen.length) {
+    setViaFocus(viaFocus === node.id() ? null : node.id());
+    return;
+  }
+  if (lastTrace && viaFocus && node.hasClass("index")) {
+    setViaFocus(null);
+    return;
+  }
+  showPersonContacts(node.id());
+}
+
+// id を経由する2段目だけ濃くする。null なら全部薄い状態に戻す
+function setViaFocus(id) {
+  if (!lastTrace) return;
+  viaFocus = id;
+  const reached = new Set(id ? lastTrace.second_gen.filter((p) => (p.vias || [p.via]).includes(id)).map((p) => p.id) : []);
+  cy.batch(() => {
+    cy.elements().removeClass("via-path via-focus");
+    cy.nodes(".gen2").forEach((n) => n.toggleClass("faint", !reached.has(n.id())));
+    cy.edges(".trace2").addClass("faint");
+    cy.nodes(".gen1").forEach((n) => n.toggleClass("faint", Boolean(id) && n.id() !== id));
+    if (id) {
+      cy.getElementById(id).addClass("via-focus");
+      reached.forEach((cid) => cy.getElementById([id, cid].sort().join("-")).addClass("via-path"));
+    }
+  });
+  syncMini();
+  renderTraceTable(lastTrace, id);
+  renderCounts(lastTrace, id ? { id, n: reached.size } : null);
+  showTab("contacts");
+}
+
+// グラフの上の人数表示：1st gen 6 / 2nd gen 26 (34 without time order)
+function renderCounts(res, focus) {
+  const el = $("#counts");
+  const wasHidden = el.hidden;
+  if (!res) {
+    el.hidden = true;
+    if (!wasHidden && cy) cy.resize();  // 人数の行が消えてグラフ領域の高さが変わる
+    return;
+  }
+  const c = res.counts || {
+    first_gen: res.first_gen.length, second_gen: res.second_gen.length,
+    second_gen_if_time_ignored: res.second_gen_if_time_ignored,
+  };
+  const ignored = c.second_gen_if_time_ignored;
+  const second = ignored === null || ignored === undefined
+    ? `2nd gen <span class="muted">— (depth 1)</span>`
+    : `2nd gen <b>${c.second_gen}</b> <span class="muted">(${ignored} without time order)</span>`;
+  const via = focus ? ` · <span class="via">via ${esc(focus.id)}: <b>${focus.n}</b></span>` : "";
+  const ja = ignored === null || ignored === undefined
+    ? `（${esc(res.index.id)} 起点：1段目 ${c.first_gen}人）`
+    : `（${esc(res.index.id)} 起点：1段目 ${c.first_gen}人／2段目 ${c.second_gen}人。時間順を無視すると ${ignored}人）`;
+  el.innerHTML = `<span class="idx">${esc(res.index.id)}</span> 1st gen <b>${c.first_gen}</b> / ${second}${via}
+    <span class="ja">${ja}</span>`;
+  el.hidden = false;
+  if (wasHidden && cy) cy.resize();  // 人数の行が出てグラフ領域の高さが変わる
 }
 
 function contactSummary(contacts, withRoom = true) {
@@ -442,21 +528,30 @@ function secondGenCount(res) {
   return `<b>${n}</b> time-respecting <span class="ignored">(${res.second_gen_if_time_ignored} if time order ignored)</span>`;
 }
 
-function renderTraceTable(res) {
+// focusId：1段目の人をクリックしているとき、その人を経由する2段目だけを表に出す
+function renderTraceTable(res, focusId = null) {
   const w = res.window;
   const end = w.end === "2099-12-31" ? "not isolated" : shortDate(w.end);
   const first = res.first_gen.map((p) => `
-    <tr data-id="${esc(p.id)}">
+    <tr data-id="${esc(p.id)}" class="${p.id === focusId ? "focus" : ""}">
       <td class="id">${esc(p.id)}</td><td>${esc(p.name)}</td>
       <td>${esc(p.kind)}</td><td>${badge(p.status)}</td>
       <td>${contactSummary(p.contacts)}</td>
     </tr>`).join("");
-  const second = res.second_gen.map((p) => `
+  const shown = focusId ? res.second_gen.filter((p) => (p.vias || [p.via]).includes(focusId)) : res.second_gen;
+  const second = shown.map((p) => {
+    const vias = (p.vias || [p.via]).map((v) => (v === focusId || (!focusId && v === p.via) ? `<b>${esc(v)}</b>` : esc(v)));
+    return `
     <tr data-id="${esc(p.id)}">
       <td class="id">${esc(p.id)}</td><td>${badge(p.status)}</td>
-      <td>via <b>${esc(p.via)}</b></td>
+      <td>via ${vias.join(", ")}</td>
       <td>${contactSummary(p.contacts, false)}</td>
-    </tr>`).join("");
+    </tr>`;
+  }).join("");
+  const focusNote = focusId ? `
+    <p class="focus-note">Showing only 2nd gen via <b>${esc(focusId)}</b>: ${shown.length} of ${res.second_gen.length}.
+      Click ${esc(focusId)} again (or the background) to show all.
+      <span class="ja">（${esc(focusId)} を経由する2段目だけ表示中。もう一度クリックすると全員に戻る）</span></p>` : "";
   $("#tab-contacts").innerHTML = `
     <p class="summary">Index <b>${esc(res.index.id)}</b> ${esc(res.index.name)} ${badge(res.index.status)}
       · infectious window <b>${shortDate(w.start)} → ${end}</b></p>
@@ -468,6 +563,7 @@ function renderTraceTable(res) {
       </div>
       <div>
         <h3>2nd generation <span class="count">${secondGenCount(res)}</span></h3>
+        ${focusNote}
         <table><thead><tr><th>ID</th><th>Status</th><th>Via</th><th>Contact (≥ 1 day after)</th></tr></thead>
         <tbody>${second || `<tr><td colspan="4" class="muted">${depth() === 1 ? "Set depth 2 to see the second generation." : "None"}</td></tr>`}</tbody></table>
       </div>
@@ -515,6 +611,7 @@ function showPersonContacts(id) {
 async function findSource() {
   const rows = await api("/api/source");
   traceRun++;  // 再生中の追跡アニメーションを止める
+  renderCounts(null);
   cy.stop(true, false);
   hideCaption();
   clearHighlights();
@@ -588,6 +685,7 @@ async function ask() {
   const ids = idsIn(res.rows);
   (question.toUpperCase().match(/\b[PNDR]\d{2}\b/g) || []).forEach((id) => ids.add(id));
   traceRun++;  // 再生中の追跡アニメーションを止める
+  renderCounts(null);
   cy.stop(true, false);
   hideCaption();
   clearHighlights();
@@ -621,11 +719,15 @@ async function ask() {
 
 async function reset() {
   traceRun++;  // 再生中の追跡アニメーションを止める
+  renderCounts(null);
   hideCaption();
   await api("/api/reset", {});
   persons = await api("/api/persons");
   fillPersonSelect();
   initGraph(await api("/api/graph"));
+  lastTrace = null;
+  viaFocus = null;
+  document.querySelector('input[name=depth][value="1"]').checked = true;  // depth も初期値の 1 に戻す
   prefillDates();
   pickPerson($("#person").value);
   $("#tab-contacts").innerHTML = `<p class="empty">Data reset. Mark a positive or trace contacts.<br><span class="ja">（初期データに戻しました。陽性者を登録するか、接触者を追跡してください）</span></p>`;

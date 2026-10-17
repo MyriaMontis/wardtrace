@@ -93,9 +93,26 @@ footer .ja { color: #d1d5db; margin-left: 4px; }
 main {
   grid-area: main;
   display: grid;
-  grid-template-rows: 1fr 320px;
+  grid-template-rows: auto 1fr 320px;
   min-height: 0;
 }
+
+/* グラフの上の人数表示（追跡したときだけ出す） */
+#counts {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px;
+  padding: 7px 16px; font-size: 15px;
+  background: var(--panel); border-bottom: 1px solid var(--line);
+}
+#counts[hidden] { display: none; }
+#counts b { font-size: 17px; }
+#counts .idx {
+  padding: 1px 8px; border-radius: 10px; font-size: 13px; font-weight: 700;
+  color: #fff; background: var(--positive);
+}
+#counts .via { color: #92400e; }
+#counts .ja { margin-left: 6px; }
+.focus-note { margin: 0 0 6px; padding: 5px 8px; font-size: 12px; background: #fef9c3; border-radius: 4px; }
+tbody tr.focus { background: #fff7ed; }
 #graph-wrap { position: relative; min-height: 0; }
 #cy { position: absolute; inset: 0; }
 .legend {

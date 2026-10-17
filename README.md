@@ -121,16 +121,19 @@ Marking a new person positive changes the data until you press **Reset**.
 3. The graph explains itself in steps (about 8–10 seconds in total for depth 2). A caption box at the top left of the graph says what each step shows, in English with a Japanese note:
    - **Step 1** — `P12's close contacts in the ward (10/13–10/16): 6 people`. The graph stays in the **original ward layout**, fades everyone else, and zooms in on the index (red) and its 1st generation (orange) with orange lines, so you see where in the ward the contacts are.
    - **Step 2** (depth 2 only) — `Who they met afterwards (time-respecting): 26 people — 34 if time order were ignored`. The 2nd generation turns yellow with yellow lines and the view zooms out to include them.
-   - **Step 3** — `Re-arranged around P12: 1st gen inner ring, 2nd gen outer ring`. The nodes move into rings around the index (the abstract view); unrelated people stay faded on the outer edge. The buttons become clickable again when this finishes; the caption disappears a few seconds later.
+   - **Step 3** — `Re-arranged around P12: 1st gen inner ring, 2nd gen outer ring`. The nodes move into rings around the index (the abstract view); unrelated people stay faded on the outer edge. With depth 2 the 2nd generation is then shown **faded** (still yellow). The buttons become clickable again when this finishes; the caption disappears a few seconds later.
+   - Nodes and the camera move together in every step, and the rings are centered on the index's current spot, so the view does not jump around.
    A small **Ward overview** appears at the top right of the graph: the whole ward in the *original* layout from the first screen, with the same colors, so you can see where the chain sits in the ward. Click it to move the main graph back to the original layout (colors stay); press **Trace contacts** again to return to the index-centered view.
 4. The **Contacts** tab opens:
    - Summary line: `Index P12 Tanaka (positive) · infectious window 10/13 → 10/16`. The window is 2 days before onset (or test date) until isolation.
    - Left table **1st generation (6)**: ID, Name, Kind, Status, and close contacts grouped by type with dates and room, e.g. `care: 10/13, 10/14, 10/15, 10/16 (502)`.
    - Right table **2nd generation**: ID, Status, `via` (which 1st-generation person links them), and the contact dates. The heading shows the effect of the time-order rule, e.g. **`26 time-respecting (34 if time order ignored)`**. With depth 1 it says `Set depth 2 to see the second generation.`
    - Click any row to center that person in the graph.
+   - A **counts bar** appears above the graph: `P12 1st gen 6 / 2nd gen 26 (34 without time order)` (with a Japanese note). With depth 1 the 2nd gen shows `— (depth 1)`.
+   - **Click a 1st-generation node** (depth 2) to see the paths through that person: only the 2nd-generation people reached via them become solid with yellow lines, the other 1st-generation people fade, the counts bar adds `· via N07: 8`, and the 2nd-generation table is filtered (`Showing only 2nd gen via N07: 8 of 26`). Click the same node again, the index, or the background to show all again. Expected: D01 → 3, N05 → 10, N07 → 8, P08 → 6, P25 → 4, R01 → 1 (one person can be reached via several, so these add up to more than 26).
 5. Status line: `Traced P12: 6 first-gen, 26 second-gen (34 if time order ignored)`.
 
-Expected for P12 after Step 1 on fresh data: 1st generation = D01, N05, **N07**, P08, P25, R01 (roommates P08 and P25 plus the staff who cared for P12). 2nd generation = 26 with time order, 34 without — **8 false chains removed**. Example of a removed chain: N10 cared for P25 only on 10/12–10/13, but P25's contact with P12 started on 10/13, so P12 → P25 → N10 is impossible.
+Expected for P12 after Step 1 on fresh data: 1st generation = D01, N05, **N07**, P08, P25, R01 (roommates P08 and P25 plus the staff who cared for P12). 2nd generation = 26 with time order, 34 without — **8 people don't fit the time order**, so they drop out of this trace (that does not prove they are uninfected). Example of a removed chain: N10 cared for P25 only on 10/12–10/13, but P25's contact with P12 started on 10/13, so P12 → P25 → N10 is impossible.
 
 ### Step 3 — Find source
 
@@ -156,7 +159,7 @@ Expected: "Who did N07 care for on night shifts?" → 18 patients (P01, P02, P03
 
 - **Click a node**: the Contacts tab lists that person's close contacts over the whole period (ID, status, contact types, dates). Example: N07 → 18 people.
 - **Ward overview** (top right, after a trace): mirrors every highlight (trace, source, ask) on the original layout. Click it to show that layout in the main graph.
-- **Reset**: reloads the initial data (`POST /api/reset`), redraws the full graph and clears all tabs. The Ward overview is hidden until the next trace.
+- **Reset**: reloads the initial data (`POST /api/reset`), redraws the full graph, clears all tabs, hides the counts bar and sets **Depth back to 1**. The Ward overview is hidden until the next trace.
 - **Tabs** can be switched freely; each keeps its last result.
 
 ---
@@ -170,7 +173,7 @@ All JSON. `/` serves `frontend/index.html`; `/vendor/cytoscape.min.js` is served
 | GET | `/api/persons` | — | `[{id, name, kind, role, status, room_id, test_date, onset_date}]` |
 | GET | `/api/graph` | — | `{nodes, edges}` in Cytoscape format (all people, close contacts merged per pair) |
 | POST | `/api/positive` | `{id, test_date, onset_date?}` | updated person (`status="positive"`, `isolated_date=test_date`); 404 if unknown |
-| POST | `/api/trace` | `{index_id, depth: 1\|2}` | `{index, window, first_gen, second_gen, second_gen_if_time_ignored, graph}`; 404 if unknown, 422 if depth is not 1 or 2 |
+| POST | `/api/trace` | `{index_id, depth: 1\|2}` | `{index, window, first_gen, second_gen, second_gen_if_time_ignored, counts, graph}`. Each 2nd-gen entry has `via` (earliest link) and `vias` (every 1st-gen person linking to them). 404 if unknown, 422 if depth is not 1 or 2 |
 | GET | `/api/source` | — | `[{person, linked_positive_ids, n, contacts}]` (max 10, most linked first) |
 | POST | `/api/ask` | `{question}` | `{cypher, rows, answer}`; `{cypher: null, rows: [], answer: "LLM unavailable"}` if ai& is not configured or down |
 | POST | `/api/reset` | — | reloads the initial data; returns CONTACT counts |
@@ -210,7 +213,7 @@ Neo4j must be running. The tests reload the initial data (`/api/reset`).
 .venv/bin/python -m pytest -q tests
 ```
 
-26 tests: the initial data (P12 untested with dates, N07 linked to 2), the demo scenario after marking P12 positive (P12 turns positive, N07 first with 3, P03/P22 excluded, P12's 1st generation, 26 vs 34), LLM safety checks (no LLM call needed), and regressions (a fever-negative person linked to two positives is still excluded; an out-of-window contact does not hide someone from the 2nd generation).
+28 tests: the initial data (P12 untested with dates, N07 linked to 2), the demo scenario after marking P12 positive (P12 turns positive, N07 first with 3, P03/P22 excluded, P12's 1st generation, 26 vs 34, `counts`, `vias`), LLM safety checks (no LLM call needed), and regressions (a fever-negative person linked to two positives is still excluded; an out-of-window contact does not hide someone from the 2nd generation).
 
 ## Troubleshooting
 

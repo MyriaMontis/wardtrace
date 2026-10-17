@@ -98,5 +98,25 @@ def test_time_order_removes_false_chains(demo):
     assert res["second_gen_if_time_ignored"] == 34
 
 
+def test_trace_counts(demo):
+    two = demo.post("/api/trace", json={"index_id": "P12", "depth": 2}).json()
+    assert two["counts"] == {"first_gen": 6, "second_gen": 26, "second_gen_if_time_ignored": 34}
+    one = demo.post("/api/trace", json={"index_id": "P12", "depth": 1}).json()
+    assert one["counts"] == {"first_gen": 6, "second_gen": 0, "second_gen_if_time_ignored": None}
+
+
+def test_second_gen_vias_are_first_gen(demo):
+    # 1段目をクリックしたときの強調に使う vias：全員1段目の人で、via（最も早い経由者）を含む
+    res = demo.post("/api/trace", json={"index_id": "P12", "depth": 2}).json()
+    first = {p["id"] for p in res["first_gen"]}
+    for p in res["second_gen"]:
+        assert p["vias"] == sorted(p["vias"])
+        assert set(p["vias"]) <= first
+        assert p["via"] in p["vias"]
+    # 1段目の誰かを経由して、2段目の全員にたどり着ける
+    reached = {p["id"] for v in first for p in res["second_gen"] if v in p["vias"]}
+    assert reached == {p["id"] for p in res["second_gen"]}
+
+
 def test_trace_unknown_person(client):
     assert client.post("/api/trace", json={"index_id": "X99", "depth": 1}).status_code == 404

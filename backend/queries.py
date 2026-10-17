@@ -198,9 +198,10 @@ def trace(index_id, depth=2):
     for cid, entry in second.items():
         if cid in first or cid == index_id:
             continue
-        # via は最も早く接触した1段目の人
-        via, cs = min(entry.pop("via_all").items(), key=lambda kv: _earliest(kv[1])["date"])
-        second_gen.append({**entry, "via": via,
+        # via は最も早く接触した1段目の人、vias は時間順を守ってつながる1段目の人の全員
+        via_all = entry.pop("via_all")
+        via, cs = min(via_all.items(), key=lambda kv: _earliest(kv[1])["date"])
+        second_gen.append({**entry, "via": via, "vias": sorted(via_all),
                            "contacts": sorted(cs, key=lambda c: c["date"])})
 
     first_gen = sorted(first.values(), key=lambda p: p["id"])
@@ -227,6 +228,11 @@ def trace(index_id, depth=2):
         "first_gen": first_gen,
         "second_gen": second_gen,
         "second_gen_if_time_ignored": ignoring_time,
+        "counts": {
+            "first_gen": len(first_gen),
+            "second_gen": len(second_gen),
+            "second_gen_if_time_ignored": ignoring_time,
+        },
         "graph": build_graph(gen, trace_edges),
     }
 

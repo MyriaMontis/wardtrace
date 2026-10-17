@@ -22,7 +22,7 @@
 
 ## 実装状況（2026-10-17 時点）
 
-PLAN.md の実装順はすべて完了し、12章のデモ（P12陽性 → Trace depth2 → Find source → Ask）が最後まで通る。テストは26件すべて通過。詳しい使い方・API・画面の説明は **README.md**（英語）にある。
+PLAN.md の実装順はすべて完了し、12章のデモ（P12陽性 → Trace depth2 → Find source → Ask）が最後まで通る。テストは28件すべて通過。詳しい使い方・API・画面の説明は **README.md**（英語）にある。
 
 - 起動手順：`docker compose up -d` → `.venv/bin/python data/generate.py` → `.venv/bin/python -m backend.load` → `.venv/bin/python -m uvicorn backend.main:app --port 8000` → http://localhost:8000
 - Claude Code のプレビューでは `.claude/launch.json` の `wardtrace`（uvicorn、ポート 8000、`--reload` 付き）で起動できる。`frontend/` を作ったあとは、`main.py` が読み込まれ直すまで `/` が配信されない（`--reload` は .py の変更で再起動する）
@@ -48,13 +48,15 @@ PLAN.md の実装順はすべて完了し、12章のデモ（P12陽性 → Trace
 | 対象者 | `#person`（select） | 値は ID（例 `P12`）。初期値は P12。変えると検査日・発症日が自動で入る（記録済みの日付があればそれ、なければ検査日 2026-10-16・発症日は空）。選ばれている人はグラフで青く点滅する（クラス `picked`、700ms ごとに `pulse-on` を切り替え） |
 | 検査日・発症日 | `#test-date`, `#onset-date`（date） | `YYYY-MM-DD`。発症日は任意 |
 | Mark positive | `#mark` | `POST /api/positive` のあと、選択中の depth で自動的に Trace まで実行する。データが変わるので、終わったら Reset する |
-| Depth | `input[name=depth]`（value `1` / `2`） | 初期値は 1 |
+| Depth | `input[name=depth]`（value `1` / `2`） | 初期値は 1。Reset で 1 に戻る |
 | Trace contacts | `#trace` | `#person` の人を起点に `POST /api/trace`。表 `#tab-contacts` とステータスはすぐ出る。グラフは3段階で見せる：① 最初の配置のまま起点と1段目にズーム → ② 2段目を追加（depth 2 のみ）→ ③ 起点中心の輪に並べ替え。各段階の説明は字幕 `#caption`（左上）。depth 2 で約8〜10秒、終わるまでボタンは無効 |
 | Find source | `#source` | `GET /api/source`。候補を太い赤枠、陽性者への線を赤にする。結果は `#tab-source` |
 | 質問欄 | `#question`（textarea） | 空のまま送ると placeholder の質問を送る |
 | 質問の候補 | `.chip`（`data-q` に質問文） | 押すとすぐ送信 |
 | Ask | `#ask` | `POST /api/ask`。2〜4秒かかる。結果は `#tab-ask`（回答 `.answer`、Cypher は `<details>` の中） |
-| Reset | `#reset` | `POST /api/reset` で初期データに戻し、グラフも描き直す |
+| Reset | `#reset` | `POST /api/reset` で初期データに戻し、グラフも描き直す。人数表示を隠し、depth を 1 に戻す |
+| 人数表示 | `#counts`（グラフの上の行） | 追跡すると出る。例 `P12 1st gen 6 / 2nd gen 26 (34 without time order)`。1段目をクリック中は `· via N07: 8` が付く。感染源推定・質問・Reset で隠れる |
+| 1段目のノード | `cy.getElementById('N07').emit('tap')` | depth 2 の追跡後、その人を経由する2段目だけ濃くし（他は `faint` クラスで薄い）、経路の線（`via-path`）を出し、2段目の表を絞る。同じノード・起点・背景をもう一度押すと全員に戻る。1段目以外のノードは今までどおり接触一覧を出す |
 | ステータス | `#status` | 直前の操作の結果（例 `Traced P12: 6 first-gen, 26 second-gen (34 if time order ignored)`）。エラーは `Error: ...` |
 | タブ | `.tabs button[data-tab=contacts\|source\|ask]` | 結果パネルの切り替え |
 | 病棟全体の縮小図 | `#mini-wrap`（中の図は `#mini`、変数 `mini`） | 追跡すると右上に出る。最初の配置のまま、メインと同じ色で強調する。クリックするとメインの図を最初の配置に戻し（色はそのまま）、縮小図は隠れる。Reset でも隠れる |
