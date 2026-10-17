@@ -9,6 +9,10 @@ When a patient tests positive, WardTrace links the records a hospital already ha
 
 **Decision support only.** WardTrace finds facts in the records; the infection control team (ICT) makes every decision. All data is fictional (one ward, 30 patients, 15 staff, 7 days).
 
+![WardTrace tracing from P12 on the original ward layout: orange = close contacts, yellow = 26 time-respecting 2nd-generation contacts (34 without time order)](docs/WardTrace.jpg)
+
+Built in one day at +81 Builders (Tokyo, 2026-10-17); made it to the final round.
+
 | Sponsor tool | How it is used |
 | --- | --- |
 | **Neo4j** | Contact graph built from ward records. Multi-hop tracing with infectious-window and time-order constraints, and the common-source search within incubation windows, are Cypher queries — complete and reproducible. |
