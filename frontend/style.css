@@ -94,8 +94,13 @@ main {
   grid-area: main;
   display: grid;
   grid-template-rows: auto 1fr 320px;
+  /* 人数表示が隠れていても（display: none）、グラフと結果パネルが自分の段に入るように名前で置く */
+  grid-template-areas: "counts" "graph" "panel";
   min-height: 0;
 }
+#counts { grid-area: counts; }
+#graph-wrap { grid-area: graph; }
+#panel { grid-area: panel; }
 
 /* グラフの上の人数表示（追跡したときだけ出す） */
 #counts {
