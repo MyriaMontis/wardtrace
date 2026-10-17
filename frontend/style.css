@@ -106,6 +106,17 @@ main {
 }
 .legend span { display: flex; align-items: center; gap: 5px; }
 
+/* 追跡アニメーションの各段階で、何をしているかを出す字幕 */
+#caption {
+  position: absolute; left: 12px; top: 10px; max-width: 58%;
+  padding: 8px 12px; font-size: 14px; font-weight: 600; line-height: 1.45;
+  color: var(--text); background: rgba(255,255,255,.96);
+  border: 1px solid var(--line); border-left: 4px solid var(--gen1); border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+#caption[hidden] { display: none; }
+#caption .ja { font-size: 12px; }
+
 /* 追跡後に右上に出す病棟全体の縮小図（最初の配置のまま）。右下は凡例と重なるので右上 */
 #mini-wrap {
   position: absolute; right: 12px; top: 10px;

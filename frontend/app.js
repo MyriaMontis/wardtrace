@@ -99,7 +99,23 @@ const STYLE = [
   { selector: "edge.source-edge", style: { "width": 3.5, "line-color": "#dc2626", "opacity": 1 } },
   { selector: ".dim", style: { "opacity": 0.12 } },
   { selector: "edge.dim", style: { "opacity": 0.04 } },
+  // Person 欄で選ばれている人：青い光がゆっくり点滅する（薄くされていても見えるようにする）
+  { selector: "node.picked", style: {
+    "opacity": 1, "underlay-color": "#2563eb", "underlay-padding": 10, "underlay-opacity": 0.08,
+    "underlay-shape": "ellipse",
+    "transition-property": "underlay-opacity, opacity, background-color", "transition-duration": "650ms",
+  } },
+  { selector: "node.picked.pulse-on", style: { "underlay-opacity": 0.5 } },
 ];
+
+// Person 欄で選ばれている人を点滅させる
+function pickPerson(id) {
+  if (!cy) return;
+  cy.nodes(".picked").removeClass("picked pulse-on");
+  cy.getElementById(id).addClass("picked");
+}
+
+setInterval(() => { if (cy) cy.nodes(".picked").toggleClass("pulse-on"); }, 700);
 
 function initGraph(graph) {
   if (cy) cy.destroy();
@@ -194,6 +210,8 @@ function showMini() {
 
 function showWardInMain() {
   // メインの図を最初の配置（病棟全体）に戻す。色や強調はそのまま
+  traceRun++;
+  hideCaption();
   cy.layout({
     name: "preset", positions: (n) => wardPositions[n.id()],
     animate: true, animationDuration: 500, fit: true, padding: 30,
@@ -249,53 +267,125 @@ function depth() {
 async function trace() {
   const indexId = $("#person").value;
   const res = await api("/api/trace", { index_id: indexId, depth: depth() });
-  renderTraceGraph(res);
+  // 表とステータスは先に出し、グラフは段階的に見せる
   renderTraceTable(res);
   showTab("contacts");
   const ignored = res.second_gen_if_time_ignored;
   setStatus(`Traced ${indexId}: ${res.first_gen.length} first-gen, ${res.second_gen.length} second-gen` +
     (ignored === null || ignored === undefined ? "" : ` (${ignored} if time order ignored)`));
+  await renderTraceGraph(res);
 }
 
-function renderTraceGraph(res) {
+// 追跡アニメーションの世代番号。新しい追跡・感染源推定・質問・Reset で増やし、古いアニメーションを止める
+let traceRun = 0;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+function animateFit(eles, padding, duration) {
+  return cy.animation({ fit: { eles, padding }, duration, easing: "ease-in-out-cubic" }).play().promise();
+}
+
+async function toWardLayout(duration) {
+  // メインの図を最初の配置（病棟全体）に戻す。すでにその配置なら何もしない
+  const moved = cy.nodes().some((n) => {
+    const p = n.position(), w = wardPositions[n.id()];
+    return w && (Math.abs(p.x - w.x) > 1 || Math.abs(p.y - w.y) > 1);
+  });
+  if (!moved) return;
+  const layout = cy.layout({
+    name: "preset", positions: (n) => wardPositions[n.id()],
+    animate: true, animationDuration: duration, fit: false,
+  });
+  const done = layout.pon("layoutstop");
+  layout.run();
+  await done;
+}
+
+function caption(en, ja) {
+  const el = $("#caption");
+  el.innerHTML = `${esc(en)}<br><span class="ja">${esc(ja)}</span>`;
+  el.hidden = false;
+}
+
+function hideCaption() {
+  $("#caption").hidden = true;
+}
+
+// 追跡結果を3段階で見せる：
+//  ① 最初の配置のまま、起点と1段目にズーム（病棟の中のどこでつながったかが分かる）
+//  ② 2段目を足して、関係者全体が入るまでズームアウト
+//  ③ 起点を中心に並べ替える（1段目が内側の輪、2段目が外側の輪、無関係は薄く外周）
+async function renderTraceGraph(res) {
+  const run = ++traceRun;
+  const alive = () => run === traceRun;
+  cy.stop(true, false);
   clearHighlights();
+  $("#mini-wrap").hidden = true;
+
   const gen = {};
   res.graph.nodes.forEach((n) => { gen[n.data.id] = n.data.gen; });
   res.graph.nodes.forEach((n) => updateNodeData(n.data));
   const index = res.index.id;
   const trace1 = new Set(res.first_gen.map((p) => [index, p.id].sort().join("-")));
   const trace2 = new Set(res.second_gen.map((p) => [p.via, p.id].sort().join("-")));
-
-  cy.batch(() => {
-    cy.nodes().forEach((n) => {
-      const g = gen[n.id()];
-      if (g === 0) n.addClass("index");
-      else if (g === 1) n.addClass("gen1");
-      else if (g === 2) n.addClass("gen2");
-      else n.addClass("dim");
-    });
-    cy.edges().forEach((e) => {
-      if (trace1.has(e.id())) e.addClass("trace1");
-      else if (trace2.has(e.id())) e.addClass("trace2");
-      else e.addClass("dim");
-    });
-  });
-
-  // 起点を中心に、1段目・2段目・無関係の順に外側へ広がる配置。関係者にズームする
+  const byGen = (g) => cy.nodes().filter((n) => gen[n.id()] === g);
   const related = cy.nodes().filter((n) => gen[n.id()] !== null && gen[n.id()] !== undefined);
+  const w = res.window;
+  const windowText = `${shortDate(w.start)}–${w.end === "2099-12-31" ? "now" : shortDate(w.end)}`;
+
+  // ① 最初の配置で、起点と1段目
+  await toWardLayout(500);
+  if (!alive()) return;
+  cy.batch(() => {
+    cy.elements().addClass("dim");
+    byGen(0).removeClass("dim").addClass("index");
+    byGen(1).removeClass("dim").addClass("gen1");
+    cy.edges().filter((e) => trace1.has(e.id())).removeClass("dim").addClass("trace1");
+  });
+  syncMini();
+  caption(`Step 1 · ${index}'s close contacts in the ward (${windowText}): ${res.first_gen.length} people`,
+    `（病棟の配置のまま、${index} と感染可能期間に濃厚接触した人を表示）`);
+  await animateFit(byGen(0).union(byGen(1)), 90, 900);
+  await sleep(1400);
+  if (!alive()) return;
+
+  // ② 2段目
+  if (res.second_gen.length) {
+    cy.batch(() => {
+      byGen(2).removeClass("dim").addClass("gen2");
+      cy.edges().filter((e) => trace2.has(e.id())).removeClass("dim").addClass("trace2");
+    });
+    syncMini();
+    const ignored = res.second_gen_if_time_ignored;
+    caption(`Step 2 · Who they met afterwards (time-respecting): ${res.second_gen.length} people` +
+      (ignored === null || ignored === undefined ? "" : ` — ${ignored} if time order were ignored`),
+      "（1段目の人が、そのあと（1日以上後）に接触した人＝2段目）");
+    await animateFit(related, 50, 900);
+    await sleep(1400);
+    if (!alive()) return;
+  }
+
+  // ③ 起点を中心に並べ替える（抽象化）
+  caption(`Step ${res.second_gen.length ? 3 : 2} · Re-arranged around ${index}: 1st gen inner ring` +
+    (res.second_gen.length ? ", 2nd gen outer ring" : ""),
+    `（${index} を中心に整理。外側の薄い点は無関係の人。右上の小さな図が元の配置）`);
   const layout = cy.layout({
     name: "concentric",
     concentric: (n) => ({ 0: 3, 1: 2, 2: 1 }[gen[n.id()]] ?? 0),
     levelWidth: () => 1,
     minNodeSpacing: 14,
     animate: true,
-    animationDuration: 600,
+    animationDuration: 1000,
+    animationEasing: "ease-in-out-cubic",
     fit: false,
   });
-  layout.one("layoutstop", () => cy.animate({ fit: { eles: related, padding: 50 }, duration: 400 }));
+  const done = layout.pon("layoutstop");
   layout.run();
-  syncMini();
+  await done;
+  if (!alive()) return;
   showMini();
+  await animateFit(related, 50, 500);
+  // 字幕はしばらく残してから消す（ボタンはここで押せるように戻す）
+  setTimeout(() => { if (alive()) hideCaption(); }, 3500);
 }
 
 function contactSummary(contacts, withRoom = true) {
@@ -391,6 +481,9 @@ function showPersonContacts(id) {
 
 async function findSource() {
   const rows = await api("/api/source");
+  traceRun++;  // 再生中の追跡アニメーションを止める
+  cy.stop(true, false);
+  hideCaption();
   clearHighlights();
   const keep = new Set();
   cy.batch(() => {
@@ -461,6 +554,9 @@ async function ask() {
 
   const ids = idsIn(res.rows);
   (question.toUpperCase().match(/\b[PNDR]\d{2}\b/g) || []).forEach((id) => ids.add(id));
+  traceRun++;  // 再生中の追跡アニメーションを止める
+  cy.stop(true, false);
+  hideCaption();
   clearHighlights();
   if (ids.size) {
     cy.batch(() => {
@@ -491,11 +587,14 @@ async function ask() {
 // ---------------------------------------------------------------- reset / init
 
 async function reset() {
+  traceRun++;  // 再生中の追跡アニメーションを止める
+  hideCaption();
   await api("/api/reset", {});
   persons = await api("/api/persons");
   fillPersonSelect();
   initGraph(await api("/api/graph"));
   prefillDates();
+  pickPerson($("#person").value);
   $("#tab-contacts").innerHTML = `<p class="empty">Data reset. Mark a positive or trace contacts.<br><span class="ja">（初期データに戻しました。陽性者を登録するか、接触者を追跡してください）</span></p>`;
   $("#tab-source").innerHTML = `<p class="empty">Click “Find source”.<br><span class="ja">（左の「Find source」を押してください）</span></p>`;
   $("#tab-ask").innerHTML = `<p class="empty">Ask a question in English or Japanese.<br><span class="ja">（英語か日本語で質問してください）</span></p>`;
@@ -508,13 +607,18 @@ async function init() {
   fillPersonSelect();
   initGraph(await api("/api/graph"));
   prefillDates();
+  pickPerson($("#person").value);
 
-  $("#person").addEventListener("change", prefillDates);
-  $("#mark").addEventListener("click", (e) => busy(e.target, "Marking…", markPositive));
-  $("#trace").addEventListener("click", (e) => busy(e.target, "Tracing…", trace));
-  $("#source").addEventListener("click", (e) => busy(e.target, "Searching…", findSource));
-  $("#ask").addEventListener("click", (e) => busy(e.target, "Asking…", ask));
-  $("#reset").addEventListener("click", (e) => busy(e.target, "Resetting…", reset));
+  $("#person").addEventListener("change", () => {
+    prefillDates();
+    pickPerson($("#person").value);
+  });
+  // currentTarget：ボタン内の日本語 <span> を押してもボタン自体を処理中にする
+  $("#mark").addEventListener("click", (e) => busy(e.currentTarget, "Marking…", markPositive));
+  $("#trace").addEventListener("click", (e) => busy(e.currentTarget, "Tracing…", trace));
+  $("#source").addEventListener("click", (e) => busy(e.currentTarget, "Searching…", findSource));
+  $("#ask").addEventListener("click", (e) => busy(e.currentTarget, "Asking…", ask));
+  $("#reset").addEventListener("click", (e) => busy(e.currentTarget, "Resetting…", reset));
   $("#question").addEventListener("keydown", (e) => {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) $("#ask").click();
   });

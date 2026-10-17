@@ -93,6 +93,7 @@ One screen, designed for 1440×900. Every English label has a short Japanese not
 | Faded (low opacity) | Not related to the current trace / search |
 | Thick red border with a soft glow | Source candidate |
 | Blue border | Person mentioned in the latest "Ask" answer |
+| Slowly blinking blue glow | Person currently selected in the **Person** dropdown (Step 1), even before marking them positive |
 | Line | Close contact (same room, care, or ≥ 15 min overlap in an exam room). One line per pair |
 
 On first load the graph shows all 45 people and 304 close-contact pairs in a force-directed (`cose`) layout. Scroll to zoom, drag the background to pan, drag a node to move it.
@@ -105,7 +106,7 @@ The initial data has two positives, **P05** and **P18**. **P12** (the demo's ind
 
 ### Step 1 — Mark positive
 
-1. **Person** dropdown: choose who tested positive. Each option reads `ID Name · room or role · status`, e.g. `P12 Tanaka · room 502 · untested`. P12 is selected on load.
+1. **Person** dropdown: choose who tested positive. Each option reads `ID Name · room or role · status`, e.g. `P12 Tanaka · room 502 · untested`. P12 is selected on load. The selected person **blinks with a blue glow** in the graph, so you can see who you picked before pressing anything.
 2. **Test** date and **Onset** date are filled in automatically when you change the person:
    - a person with recorded dates → those dates (P12: test 2026-10-16, onset 2026-10-15);
    - anyone else → test 2026-10-16, onset empty (onset is optional; without it the test date is used).
@@ -117,7 +118,10 @@ Marking a new person positive changes the data until you press **Reset**.
 
 1. **Depth**: `1` (default) = close contacts only; `2` = also their contacts.
 2. Click **Trace contacts**. The index case is the person selected in Step 1 (`POST /api/trace`).
-3. The graph rearranges (about 1 second of animation): the index in the center, the 1st generation in the inner ring (orange), the 2nd generation in the outer ring (yellow), everyone else faded at the edge. It then zooms to the related people. Trace lines are orange (index → 1st) and yellow (1st → 2nd).
+3. The graph explains itself in steps (about 8–10 seconds in total for depth 2). A caption box at the top left of the graph says what each step shows, in English with a Japanese note:
+   - **Step 1** — `P12's close contacts in the ward (10/13–10/16): 6 people`. The graph stays in the **original ward layout**, fades everyone else, and zooms in on the index (red) and its 1st generation (orange) with orange lines, so you see where in the ward the contacts are.
+   - **Step 2** (depth 2 only) — `Who they met afterwards (time-respecting): 26 people — 34 if time order were ignored`. The 2nd generation turns yellow with yellow lines and the view zooms out to include them.
+   - **Step 3** — `Re-arranged around P12: 1st gen inner ring, 2nd gen outer ring`. The nodes move into rings around the index (the abstract view); unrelated people stay faded on the outer edge. The buttons become clickable again when this finishes; the caption disappears a few seconds later.
    A small **Ward overview** appears at the top right of the graph: the whole ward in the *original* layout from the first screen, with the same colors, so you can see where the chain sits in the ward. Click it to move the main graph back to the original layout (colors stay); press **Trace contacts** again to return to the index-centered view.
 4. The **Contacts** tab opens:
    - Summary line: `Index P12 Tanaka (positive) · infectious window 10/13 → 10/16`. The window is 2 days before onset (or test date) until isolation.
